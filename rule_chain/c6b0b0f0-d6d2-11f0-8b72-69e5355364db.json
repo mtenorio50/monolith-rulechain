@@ -1,0 +1,718 @@
+{
+  "entityType" : "RULE_CHAIN",
+  "entity" : {
+    "additionalInfo" : {
+      "description" : "Uni project"
+    },
+    "configuration" : null,
+    "debugMode" : false,
+    "externalId" : null,
+    "firstRuleNodeId" : {
+      "entityType" : "RULE_NODE",
+      "id" : "c6bbaba0-d97e-11f0-bcba-9f87c351edd8"
+    },
+    "id" : {
+      "entityType" : "RULE_CHAIN",
+      "id" : "c6b0b0f0-d6d2-11f0-8b72-69e5355364db"
+    },
+    "name" : "Monolith",
+    "root" : false,
+    "type" : "CORE"
+  },
+  "metaData" : {
+    "connections" : [ {
+      "fromIndex" : 0,
+      "toIndex" : 1,
+      "type" : "Post attributes"
+    }, {
+      "fromIndex" : 0,
+      "toIndex" : 8,
+      "type" : "Post attributes"
+    }, {
+      "fromIndex" : 0,
+      "toIndex" : 9,
+      "type" : "Post telemetry"
+    }, {
+      "fromIndex" : 0,
+      "toIndex" : 17,
+      "type" : "RPC Request from Device"
+    }, {
+      "fromIndex" : 0,
+      "toIndex" : 17,
+      "type" : "RPC Request to Device"
+    }, {
+      "fromIndex" : 1,
+      "toIndex" : 2,
+      "type" : "Success"
+    }, {
+      "fromIndex" : 2,
+      "toIndex" : 3,
+      "type" : "Success"
+    }, {
+      "fromIndex" : 3,
+      "toIndex" : 4,
+      "type" : "Success"
+    }, {
+      "fromIndex" : 4,
+      "toIndex" : 12,
+      "type" : "Success"
+    }, {
+      "fromIndex" : 4,
+      "toIndex" : 13,
+      "type" : "Success"
+    }, {
+      "fromIndex" : 4,
+      "toIndex" : 14,
+      "type" : "Success"
+    }, {
+      "fromIndex" : 7,
+      "toIndex" : 0,
+      "type" : "Success"
+    }, {
+      "fromIndex" : 10,
+      "toIndex" : 3,
+      "type" : "Success"
+    }, {
+      "fromIndex" : 10,
+      "toIndex" : 20,
+      "type" : "Success"
+    }, {
+      "fromIndex" : 12,
+      "toIndex" : 5,
+      "type" : "Success"
+    }, {
+      "fromIndex" : 13,
+      "toIndex" : 15,
+      "type" : "True"
+    }, {
+      "fromIndex" : 14,
+      "toIndex" : 16,
+      "type" : "True"
+    }, {
+      "fromIndex" : 15,
+      "toIndex" : 11,
+      "type" : "Success"
+    }, {
+      "fromIndex" : 16,
+      "toIndex" : 11,
+      "type" : "Success"
+    }, {
+      "fromIndex" : 17,
+      "toIndex" : 6,
+      "type" : "False"
+    }, {
+      "fromIndex" : 17,
+      "toIndex" : 18,
+      "type" : "True"
+    }, {
+      "fromIndex" : 18,
+      "toIndex" : 19,
+      "type" : "Success"
+    } ],
+    "firstNodeIndex" : 7,
+    "nodes" : [ {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 304,
+        "layoutY" : 156
+      },
+      "configuration" : {
+        "version" : 0
+      },
+      "configurationVersion" : 0,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 1767745732600,
+        "failuresEnabled" : false
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "d04dc6d0-d929-11f0-afc5-358ed627911d"
+      },
+      "name" : "message type switch",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.filter.TbMsgTypeSwitchNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 73,
+        "layoutY" : 280
+      },
+      "configuration" : {
+        "scriptLang" : "JS",
+        "jsScript" : "// Only act when the device actually sent heartbeatTs\r\nvar hasHb = msg && (msg.heartbeatTs !== undefined || msg.heartbeatTS !== undefined);\r\n\r\n  if (!hasHb) {\r\n    // Do not emit anything to be saved\r\n    return { msg: {}, metadata: metadata, msgType: msgType };\r\n  }\r\n\r\n  // Emit only what should be saved to SERVER scope\r\n  var out = { latestHeartbeatTs: Date.now() };\r\n  return { msg: out, metadata: metadata, msgType: msgType };\r\n",
+        "tbelScript" : "// If heartbeat attribute isn't present, do nothing\r\nif (msg == null || msg.heartbeat == null) {\r\n    return { msg: msg, metadata: metadata, msgType: msgType };\r\n}\r\n\r\n// Heartbeat is a long integer in your case\r\nvar hb = Number(msg.heartbeat);\r\nif (!isFinite(hb) || hb <= 0) {\r\n    return { msg: msg, metadata: metadata, msgType: msgType };\r\n}\r\n\r\n// Decide what to store as latestHeartbeatTs:\r\n// If heartbeat looks like an epoch timestamp in ms (13 digits), use it.\r\n// Otherwise, use server receipt time.\r\nif (hb > 1000000000000) {        // ~2001+ in ms epoch\r\n    msg.latestHeartbeatTs = hb;\r\n} else {\r\n    msg.latestHeartbeatTs = Date.now();\r\n}\r\n\r\n// Add a debug marker so you can *prove* the node executed\r\nmsg._hb_seen = hb;\r\n\r\nreturn { msg: msg, metadata: metadata, msgType: msgType };\r\n"
+      },
+      "configurationVersion" : 0,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 1767745558083,
+        "failuresEnabled" : false
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "a079a340-d92c-11f0-81e4-bd8a9470eef2"
+      },
+      "name" : "build latestHearbeatTs",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.transform.TbTransformMsgNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 65,
+        "layoutY" : 377
+      },
+      "configuration" : {
+        "processingSettings" : {
+          "type" : "ON_EVERY_MESSAGE"
+        },
+        "scope" : "SERVER_SCOPE",
+        "notifyDevice" : false,
+        "sendAttributesUpdatedNotification" : false,
+        "updateAttributesOnlyOnValueChange" : true
+      },
+      "configurationVersion" : 3,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 1767745558083,
+        "failuresEnabled" : false
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "a079a341-d92c-11f0-81e4-bd8a9470eef2"
+      },
+      "name" : "save latestHearbeatTs",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.telemetry.TbMsgAttributesNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 378,
+        "layoutY" : 359
+      },
+      "configuration" : {
+        "tellFailureIfAbsent" : true,
+        "fetchTo" : "METADATA",
+        "clientAttributeNames" : [ ],
+        "sharedAttributeNames" : [ ],
+        "serverAttributeNames" : [ "latestHeartbeatTs", "offlineSinceTs" ],
+        "latestTsKeyNames" : [ ],
+        "getLatestValueWithTs" : false
+      },
+      "configurationVersion" : 1,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 1765873724903,
+        "failuresEnabled" : false
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "ba096920-d92d-11f0-bcba-9f87c351edd8"
+      },
+      "name" : "load latestHeartbeatTs",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.metadata.TbGetAttributesNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 614,
+        "layoutY" : 274
+      },
+      "configuration" : {
+        "scriptLang" : "JS",
+        "jsScript" : "var nowTs = Date.now();\r\n\r\nfunction toNum(v, def) {\r\n    var n = Number(v);\r\n    return isFinite(n) ? n : def;\r\n}\r\n\r\nvar hbTs = toNum(metadata.ss_latestHeartbeatTs, 0);\r\nvar prevOfflineSinceTs = toNum(metadata.ss_offlineSinceTs, 0);\r\n\r\n// Defaults (can become server attrs later)\r\nvar HB_INTERVAL_MS = 30000;\r\nvar STALE_AT = 3;   // missed >= 3\r\nvar OFFLINE_AT = 5; // missed >= 5\r\n\r\n// Missed cycles\r\nvar missed = 0;\r\nif (hbTs > 0) {\r\n    var deltaMs = nowTs - hbTs;\r\n    if (deltaMs < 0) deltaMs = 0;\r\n    missed = Math.floor(deltaMs / HB_INTERVAL_MS);\r\n}\r\n\r\n// Status\r\nvar psuCommPath = \"UNKNOWN\";\r\n\r\n\r\nif (hbTs > 0) {\r\n    if (missed >= OFFLINE_AT) {\r\n        psuCommPath = \"OFFLINE\";\r\n    } else if (missed >= STALE_AT) {\r\n        psuCommPath = \"STALE\";\r\n    } else {\r\n        psuCommPath = \"OK\";\r\n    }\r\n}\r\n\r\n// offlineSinceTs: set once on OFFLINE entry, reset on recovery\r\nvar previouslyOffline = (prevOfflineSinceTs > 0);\r\nvar currentlyOffline = (psuCommPath === \"OFFLINE\");\r\n\r\nvar offlineSinceTs = 0;\r\n\r\nif (currentlyOffline) {\r\n    if (previouslyOffline) {\r\n        offlineSinceTs = prevOfflineSinceTs;\r\n    } else {\r\n        // official offline start = last heartbeat + OFFLINE threshold window\r\n        offlineSinceTs = hbTs + (OFFLINE_AT * HB_INTERVAL_MS);\r\n    }\r\n} else {\r\n    offlineSinceTs = 0;\r\n}\r\n\r\nvar newMsgType = \"NO_EVENT\";\r\nif (!previouslyOffline && currentlyOffline) {\r\n    newMsgType = \"OFFLINE_START\";\r\n} else if (previouslyOffline && !currentlyOffline) {\r\n    newMsgType = \"OFFLINE_END\";\r\n}\r\n\r\n// Attributes to save (WHITELIST ONLY)\r\nvar out = {\r\n  psuCommPath: psuCommPath,\r\n  offlineSinceTs: offlineSinceTs\r\n  // add latestHeartbeatTs ONLY if you intentionally want it saved here:\r\n  // latestHeartbeatTs: hbTs\r\n};\r\n\r\n// Transition flags (for the next step: event logging)\r\nmetadata.offlineStartEvent = (!previouslyOffline && currentlyOffline && offlineSinceTs > 0);\r\nmetadata.offlineEndEvent = (previouslyOffline && !currentlyOffline);\r\nmetadata._nowTs = nowTs;\r\nmetadata._prevOfflineSinceTs = prevOfflineSinceTs;\r\nmetadata._offlineSinceTs = offlineSinceTs;\r\n\r\n\r\n\r\n\r\nreturn { msg: out, metadata: metadata, msgType: newMsgType };\r\n",
+        "tbelScript" : "// function Transform(msg, metadata, msgType) {\r\n\r\nconst nowTs = Date.now();\r\n\r\n// latestHeartbeatTs was loaded by the originator attributes node\r\nconst hbRaw = metadata.ss_latestHeartbeatTs;\r\nconst hbTs = hbRaw != null ? Number(hbRaw) : 0;\r\n\r\nlet psuOfflineLive = false;\r\nlet psuCommPath = \"UNKNOWN\";\r\n\r\nif (hbTs > 0) {\r\n    const delta = nowTs - hbTs;\r\n\r\n    // Get heartbeat interval from attributes, default 30s\r\n    let hbIntervalMs = 30000; // fallback\r\n\r\n    if (metadata.ss_heartbeatIntervalMs != null) {\r\n        hbIntervalMs = Number(metadata.ss_heartbeatIntervalMs);\r\n    } else if (msg.heartbeatIntervalMs != null) {\r\n        hbIntervalMs = Number(msg.heartbeatIntervalMs);\r\n    }\r\n\r\n    // How many heartbeat cycles have we effectively missed?\r\n    const cycles = delta / hbIntervalMs;\r\n\r\n    if (cycles <= 3) {                     // <= 3 cycles\r\n        psuOfflineLive = false;\r\n        psuCommPath = \"OK\";\r\n    } else if (cycles <= 10) {             // >3 and <=10 cycles\r\n        psuOfflineLive = false;\r\n        psuCommPath = \"STALE_HEARTBEAT\";\r\n    } else {                               // >10 cycles\r\n        psuOfflineLive = true;\r\n        psuCommPath = \"OFFLINE\";\r\n    }\r\n}\r\n\r\n// attach results to msg\r\nmsg.psuOfflineLive = psuOfflineLive;\r\nmsg.psuCommPath    = psuCommPath;\r\n\r\n// --- OFFLINE SINCE CALC (simple + with reset) -----------------\r\n\r\nlet offlineSinceTs = 0;\r\n\r\n// Only track when truly OFFLINE.\r\n// Start at the timestamp of the last heartbeat we saw.\r\nif (psuCommPath === \"OFFLINE\" && hbTs > 0) {\r\n    offlineSinceTs = hbTs;\r\n}\r\n\r\n// Add to msg so it gets saved\r\nmsg.offlineSinceTs = offlineSinceTs;\r\n\r\n\r\n// --- LAST OUTAGE TRACKING ---------------------------------\r\n\r\nconst prevOfflineSince = metadata.ss_offlineSinceTs\r\n    ? Number(metadata.ss_offlineSinceTs)\r\n    : 0;\r\n\r\nlet lastOutageStartTs = metadata.ss_lastOutageStartTs\r\n    ? Number(metadata.ss_lastOutageStartTs)\r\n    : 0;\r\n\r\nlet lastOutageDurationMs = metadata.ss_lastOutageDurationMs\r\n    ? Number(metadata.ss_lastOutageDurationMs)\r\n    : 0;\r\n\r\nconst currentlyOffline = (psuCommPath === \"OFFLINE\");\r\nconst previouslyOffline = (prevOfflineSince > 0);\r\n\r\n// Detect recovery: was offline before, now online/stale\r\nif (previouslyOffline && !currentlyOffline) {\r\n    lastOutageStartTs = prevOfflineSince;\r\n    lastOutageDurationMs = nowTs - prevOfflineSince;\r\n}\r\n\r\n// Save them\r\nmsg.lastOutageStartTs = lastOutageStartTs;\r\nmsg.lastOutageDurationMs = lastOutageDurationMs;\r\n\r\n// --- OUTAGE EVENT FLAG FOR HISTORY ---------------------------\r\n\r\n// Default: no outage event\r\nmetadata.outageEvent = \"false\";\r\n\r\n// Detect recovery: was offline before, now not offline\r\nif (previouslyOffline && !currentlyOffline) {\r\n    metadata.outageEvent = \"true\";\r\n}\r\n\r\n\r\nreturn {\r\n    msg: msg,\r\n    metadata: metadata,\r\n    msgType: \"POST_ATTRIBUTES_REQUEST\"\r\n};\r\n\r\n// }\r\n"
+      },
+      "configurationVersion" : 0,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 1765923824785,
+        "failuresEnabled" : false
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "c8917fe0-d938-11f0-81e4-bd8a9470eef2"
+      },
+      "name" : "online eval status",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.transform.TbTransformMsgNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 592,
+        "layoutY" : 510
+      },
+      "configuration" : {
+        "processingSettings" : {
+          "type" : "ON_EVERY_MESSAGE"
+        },
+        "scope" : "SERVER_SCOPE",
+        "notifyDevice" : false,
+        "sendAttributesUpdatedNotification" : false,
+        "updateAttributesOnlyOnValueChange" : true
+      },
+      "configurationVersion" : 3,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 1767741251161,
+        "failuresEnabled" : false
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "850f2190-d939-11f0-93b7-0f70161fd1f6"
+      },
+      "name" : "save online eval",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.telemetry.TbMsgAttributesNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 1090,
+        "layoutY" : 30
+      },
+      "configuration" : {
+        "timeoutInSeconds" : 60
+      },
+      "configurationVersion" : 0,
+      "createdTime" : 0,
+      "debugSettings" : null,
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "8eb9b540-d97d-11f0-93b7-0f70161fd1f6"
+      },
+      "name" : "send rpc",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.rpc.TbSendRPCRequestNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 261,
+        "layoutY" : 22
+      },
+      "configuration" : {
+        "persistAlarmRulesState" : false,
+        "fetchAlarmRulesStateOnStart" : false
+      },
+      "configurationVersion" : 1,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 1767739147805,
+        "failuresEnabled" : false
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "c6bbaba0-d97e-11f0-bcba-9f87c351edd8"
+      },
+      "name" : "Monolith device profile",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.profile.TbDeviceProfileNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 768,
+        "layoutY" : 27
+      },
+      "configuration" : {
+        "processingSettings" : {
+          "type" : "ON_EVERY_MESSAGE"
+        },
+        "scope" : "CLIENT_SCOPE",
+        "notifyDevice" : false,
+        "sendAttributesUpdatedNotification" : false,
+        "updateAttributesOnlyOnValueChange" : false
+      },
+      "configurationVersion" : 3,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 1767745655730,
+        "failuresEnabled" : false
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "de510110-d97f-11f0-bcba-9f87c351edd8"
+      },
+      "name" : "save heartbeat attrs",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.telemetry.TbMsgAttributesNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 531,
+        "layoutY" : 23
+      },
+      "configuration" : {
+        "defaultTTL" : 0,
+        "useServerTs" : false,
+        "processingSettings" : {
+          "type" : "ON_EVERY_MESSAGE"
+        }
+      },
+      "configurationVersion" : 1,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 1767737210398,
+        "failuresEnabled" : false
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "37c6c4a0-d980-11f0-afc5-358ed627911d"
+      },
+      "name" : "save telemetry",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.telemetry.TbMsgTimeseriesNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 63,
+        "layoutY" : 444
+      },
+      "configuration" : {
+        "msgCount" : 0,
+        "periodInSeconds" : 60,
+        "scriptLang" : "TBEL",
+        "jsScript" : "var msg = { temp: 42, humidity: 77 };\nvar metadata = { data: 40 };\nvar msgType = \"POST_TELEMETRY_REQUEST\";\n\nreturn { msg: msg, metadata: metadata, msgType: msgType };",
+        "tbelScript" : "var msg = {};\nvar metadata = {};\nvar msgType = \"\";\n\nreturn { msg: msg, metadata: metadata, msgType: msgType };",
+        "originatorId" : "c710b1a0-d94b-11f0-bcba-9f87c351edd8",
+        "originatorType" : "DEVICE"
+      },
+      "configurationVersion" : 2,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 1765872749032,
+        "failuresEnabled" : false
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "de4f1c80-da54-11f0-81e4-bd8a9470eef2"
+      },
+      "name" : "offline tick backup",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.debug.TbMsgGeneratorNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 1102,
+        "layoutY" : 585
+      },
+      "configuration" : {
+        "defaultTTL" : 0,
+        "useServerTs" : false,
+        "processingSettings" : {
+          "type" : "ON_EVERY_MESSAGE"
+        }
+      },
+      "configurationVersion" : 1,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 1765923877921,
+        "failuresEnabled" : false
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "9db13452-dab4-11f0-afc5-358ed627911d"
+      },
+      "name" : "save outage event",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.telemetry.TbMsgTimeseriesNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 602,
+        "layoutY" : 397
+      },
+      "configuration" : {
+        "scriptLang" : "TBEL",
+        "jsScript" : "return {msg: msg, metadata: metadata, msgType: msgType};",
+        "tbelScript" : "return { msg: msg, metadata: metadata, msgType: \"POST_ATTRIBUTES_REQUEST\" };\r\n"
+      },
+      "configurationVersion" : 0,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 1765915162085,
+        "failuresEnabled" : false
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "965aaa80-dab7-11f0-bcba-9f87c351edd8"
+      },
+      "name" : "force attrs msgType",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.transform.TbTransformMsgNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 1065,
+        "layoutY" : 297
+      },
+      "configuration" : {
+        "scriptLang" : "TBEL",
+        "jsScript" : "return metadata.offlineStartEvent == true;",
+        "tbelScript" : "return metadata.offlineStartEvent == true;"
+      },
+      "configurationVersion" : 0,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 1765923839448,
+        "failuresEnabled" : false
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "6f452810-dabe-11f0-8b72-69e5355364db"
+      },
+      "name" : "is OFFLINE_START",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.filter.TbJsFilterNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 869,
+        "layoutY" : 368
+      },
+      "configuration" : {
+        "scriptLang" : "TBEL",
+        "jsScript" : "return metadata.offlineEndEvent == true;",
+        "tbelScript" : "return metadata.offlineEndEvent == true;"
+      },
+      "configurationVersion" : 0,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 1765923547808,
+        "failuresEnabled" : false
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "6f452811-dabe-11f0-8b72-69e5355364db"
+      },
+      "name" : "is OFFLINE_END",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.filter.TbJsFilterNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 1085,
+        "layoutY" : 422
+      },
+      "configuration" : {
+        "scriptLang" : "JS",
+        "jsScript" : "// Transform(msg, metadata, msgType)\r\n// OFF LINE START\r\n\r\nvar nowTs = Number(metadata._nowTs);\r\nvar startTs = Number(metadata._offlineSinceTs);\r\n\r\nif (!isFinite(nowTs)) nowTs = Date.now();\r\nif (!isFinite(startTs)) startTs = 0;\r\n\r\nvar out = {\r\n  outageEvent: \"OFFLINE_START\",\r\n  outageStartTs: startTs,\r\n  \r\n};\r\n\r\nreturn { msg: out, metadata: metadata, msgType: \"POST_TELEMETRY_REQUEST\" };\r\n",
+        "tbelScript" : ""
+      },
+      "configurationVersion" : 0,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 1765923877921,
+        "failuresEnabled" : false
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "6f452813-dabe-11f0-8b72-69e5355364db"
+      },
+      "name" : "offline start",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.transform.TbTransformMsgNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 856,
+        "layoutY" : 461
+      },
+      "configuration" : {
+        "scriptLang" : "JS",
+        "jsScript" : "// Transform(msg, metadata, msgType)\r\n// OFFLINE END\r\n\r\nvar nowTs = Number(metadata._nowTs);\r\nvar startTs = Number(metadata._prevOfflineSinceTs);\r\n\r\nif (!isFinite(nowTs)) nowTs = Date.now();\r\nif (!isFinite(startTs)) startTs = 0;\r\n\r\nvar durMs = nowTs - startTs;\r\nif (!isFinite(durMs) || durMs < 0) durMs = 0;\r\n\r\nvar out = {\r\n  outageEvent: \"OFFLINE_END\",\r\n  outageStartTs: startTs,\r\n  outageEndTs: nowTs,\r\n  outageDurationMs: durMs\r\n};\r\n\r\nreturn { msg: out, metadata: metadata, msgType: \"POST_TELEMETRY_REQUEST\" };\r\n",
+        "tbelScript" : ""
+      },
+      "configurationVersion" : 0,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 1765923559139,
+        "failuresEnabled" : false
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "97f96230-dabe-11f0-81e4-bd8a9470eef2"
+      },
+      "name" : "offline end",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.transform.TbTransformMsgNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 872,
+        "layoutY" : 144
+      },
+      "configuration" : {
+        "scriptLang" : "TBEL",
+        "jsScript" : "return msg.temperature > 20;",
+        "tbelScript" : "return msg.method == \"animate\";"
+      },
+      "configurationVersion" : 0,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 0,
+        "failuresEnabled" : false
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "75873f80-ea70-11f0-a6fc-1dffa956f056"
+      },
+      "name" : "RPC filter",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.filter.TbJsFilterNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 1152,
+        "layoutY" : 115
+      },
+      "configuration" : {
+        "scriptLang" : "JS",
+        "jsScript" : "// Parse RPC params (string → object)\r\nvar params = JSON.parse(msg.params);\r\nvar commands = params.commands;\r\n\r\nvar out = [];\r\nvar msgId = Date.now();\r\n\r\n// Helper: uint8[] → Base64\r\nfunction uint8ToBase64(arr) {\r\n    var bin = '';\r\n    for (var i = 0; i < arr.length; i++) {\r\n        bin += String.fromCharCode(arr[i] & 0xFF);\r\n    }\r\n    return btoa(bin);\r\n}\r\n\r\nfor (var i = 0; i < commands.length; i++) {\r\n    var cmd = commands[i];\r\n\r\n    out.push({\r\n        msg : {\r\n            method: msg.method,\r\n            params: {\r\n                id: msgId,\r\n                idx: i,\r\n                total: commands.length,\r\n                b64: uint8ToBase64(cmd)\r\n            },\r\n            additionalInfo: msg.additionalInfo\r\n        },\r\n        metadata: metadata,\r\n        msgType: 'RPC_REQUEST'\r\n    });\r\n}\r\n\r\nreturn out;\r\n",
+        "tbelScript" : "var b64 = msg.b64;\r\nvar chunkSize = msg.chunkSize || 32;\r\n\r\nvar chunks = [];\r\nfor (var i = 0; i < b64.length; i += chunkSize) {\r\n    chunks.push(b64.substring(i, i + chunkSize));\r\n}\r\n\r\nvar out = [];\r\nfor (var i = 0; i < chunks.length; i++) {\r\n    out.push({\r\n        msg: {\r\n            id: Date.now(),\r\n            idx: i,\r\n            total: chunks.length,\r\n            b64: chunks[i]\r\n        },\r\n        metadata: metadata,\r\n        msgType: 'RPC_REQUEST'\r\n    });\r\n}\r\n\r\nreturn out;\r\n"
+      },
+      "configurationVersion" : 0,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 0,
+        "failuresEnabled" : false
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "75873f81-ea70-11f0-a6fc-1dffa956f056"
+      },
+      "name" : "RPC spilter",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.transform.TbTransformMsgNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 1164,
+        "layoutY" : 207
+      },
+      "configuration" : {
+        "timeoutInSeconds" : 60
+      },
+      "configurationVersion" : 0,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 1767644471973,
+        "failuresEnabled" : true
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "75873f82-ea70-11f0-a6fc-1dffa956f056"
+      },
+      "name" : "send rpc",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.rpc.TbSendRPCRequestNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 446,
+        "layoutY" : 635
+      },
+      "configuration" : {
+        "scope" : "CLIENT_SCOPE",
+        "keys" : [ "test" ],
+        "sendAttributesDeletedNotification" : false,
+        "notifyDevice" : false
+      },
+      "configurationVersion" : 0,
+      "createdTime" : 0,
+      "debugSettings" : null,
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "7f66e780-eb65-11f0-bb6b-45643ceafb13"
+      },
+      "name" : "delete test",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.telemetry.TbMsgDeleteAttributesNode"
+    } ],
+    "ruleChainConnections" : null
+  },
+  "relations" : [ ],
+  "attributes" : {
+    "SERVER_SCOPE" : [ ]
+  }
+}

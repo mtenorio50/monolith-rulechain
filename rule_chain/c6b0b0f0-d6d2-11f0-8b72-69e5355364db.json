@@ -73,10 +73,6 @@
       "toIndex" : 3,
       "type" : "Success"
     }, {
-      "fromIndex" : 10,
-      "toIndex" : 20,
-      "type" : "Success"
-    }, {
       "fromIndex" : 12,
       "toIndex" : 5,
       "type" : "Success"
@@ -90,11 +86,11 @@
       "type" : "True"
     }, {
       "fromIndex" : 15,
-      "toIndex" : 11,
+      "toIndex" : 20,
       "type" : "Success"
     }, {
       "fromIndex" : 16,
-      "toIndex" : 11,
+      "toIndex" : 21,
       "type" : "Success"
     }, {
       "fromIndex" : 17,
@@ -108,13 +104,21 @@
       "fromIndex" : 18,
       "toIndex" : 19,
       "type" : "Success"
+    }, {
+      "fromIndex" : 20,
+      "toIndex" : 11,
+      "type" : "Created"
+    }, {
+      "fromIndex" : 21,
+      "toIndex" : 11,
+      "type" : "Cleared"
     } ],
     "firstNodeIndex" : 7,
     "nodes" : [ {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 304,
-        "layoutY" : 156
+        "layoutX" : 278,
+        "layoutY" : 130
       },
       "configuration" : {
         "version" : 0
@@ -199,8 +203,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 378,
-        "layoutY" : 359
+        "layoutX" : 379,
+        "layoutY" : 349
       },
       "configuration" : {
         "tellFailureIfAbsent" : true,
@@ -231,8 +235,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 614,
-        "layoutY" : 274
+        "layoutX" : 783,
+        "layoutY" : 275
       },
       "configuration" : {
         "scriptLang" : "JS",
@@ -259,8 +263,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 592,
-        "layoutY" : 510
+        "layoutX" : 597,
+        "layoutY" : 479
       },
       "configuration" : {
         "processingSettings" : {
@@ -402,8 +406,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 63,
-        "layoutY" : 444
+        "layoutX" : 62,
+        "layoutY" : 447
       },
       "configuration" : {
         "msgCount" : 0,
@@ -434,8 +438,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 1102,
-        "layoutY" : 585
+        "layoutX" : 963,
+        "layoutY" : 660
       },
       "configuration" : {
         "defaultTTL" : 0,
@@ -448,7 +452,7 @@
       "createdTime" : 0,
       "debugSettings" : {
         "allEnabled" : false,
-        "allEnabledUntil" : 1765923877921,
+        "allEnabledUntil" : 1767842326408,
         "failuresEnabled" : false
       },
       "externalId" : null,
@@ -492,8 +496,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 1065,
-        "layoutY" : 297
+        "layoutX" : 1115,
+        "layoutY" : 398
       },
       "configuration" : {
         "scriptLang" : "TBEL",
@@ -520,8 +524,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 869,
-        "layoutY" : 368
+        "layoutX" : 852,
+        "layoutY" : 394
       },
       "configuration" : {
         "scriptLang" : "TBEL",
@@ -548,8 +552,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 1085,
-        "layoutY" : 422
+        "layoutX" : 1124,
+        "layoutY" : 477
       },
       "configuration" : {
         "scriptLang" : "JS",
@@ -576,8 +580,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 856,
-        "layoutY" : 461
+        "layoutX" : 848,
+        "layoutY" : 475
       },
       "configuration" : {
         "scriptLang" : "JS",
@@ -604,8 +608,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 872,
-        "layoutY" : 144
+        "layoutX" : 853,
+        "layoutY" : 87
       },
       "configuration" : {
         "scriptLang" : "TBEL",
@@ -632,8 +636,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 1152,
-        "layoutY" : 115
+        "layoutX" : 1142,
+        "layoutY" : 90
       },
       "configuration" : {
         "scriptLang" : "JS",
@@ -660,8 +664,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 1164,
-        "layoutY" : 207
+        "layoutX" : 1146,
+        "layoutY" : 167
       },
       "configuration" : {
         "timeoutInSeconds" : 60
@@ -686,14 +690,23 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 446,
-        "layoutY" : 635
+        "layoutX" : 1124,
+        "layoutY" : 564
       },
       "configuration" : {
-        "scope" : "CLIENT_SCOPE",
-        "keys" : [ "test" ],
-        "sendAttributesDeletedNotification" : false,
-        "notifyDevice" : false
+        "scriptLang" : "TBEL",
+        "alarmDetailsBuildJs" : "var details = {};\nif (metadata.prevAlarmDetails) {\n    details = JSON.parse(metadata.prevAlarmDetails);\n    //remove prevAlarmDetails from metadata\n    delete metadata.prevAlarmDetails;\n    //now metadata is the same as it comes IN this rule node\n}\n\n\nreturn details;",
+        "alarmDetailsBuildTbel" : "return { \"reason\": \"outageEvent\", \"event\": msg.outageEvent };",
+        "useMessageAlarmData" : false,
+        "overwriteAlarmDetails" : false,
+        "alarmType" : "Gateway Offline",
+        "severity" : "CRITICAL",
+        "propagate" : false,
+        "relationTypes" : [ ],
+        "propagateToOwner" : false,
+        "propagateToOwnerHierarchy" : false,
+        "propagateToTenant" : false,
+        "dynamicSeverity" : false
       },
       "configurationVersion" : 0,
       "createdTime" : 0,
@@ -701,13 +714,38 @@
       "externalId" : null,
       "id" : {
         "entityType" : "RULE_NODE",
-        "id" : "7f66e780-eb65-11f0-bb6b-45643ceafb13"
+        "id" : "a5e85680-ec3e-11f0-80c0-fdc442896b74"
       },
-      "name" : "delete test",
+      "name" : "alarm offline starts",
       "queueName" : null,
       "ruleChainId" : null,
       "singletonMode" : false,
-      "type" : "org.thingsboard.rule.engine.telemetry.TbMsgDeleteAttributesNode"
+      "type" : "org.thingsboard.rule.engine.action.TbCreateAlarmNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 856,
+        "layoutY" : 552
+      },
+      "configuration" : {
+        "scriptLang" : "TBEL",
+        "alarmDetailsBuildJs" : "var details = {};\nif (metadata.prevAlarmDetails) {\n    details = JSON.parse(metadata.prevAlarmDetails);\n    //remove prevAlarmDetails from metadata\n    delete metadata.prevAlarmDetails;\n    //now metadata is the same as it comes IN this rule node\n}\n\n\nreturn details;",
+        "alarmDetailsBuildTbel" : "return { \"reason\": \"outageEvent\", \"event\": msg.outageEvent };",
+        "alarmType" : "Gateway Offline"
+      },
+      "configurationVersion" : 0,
+      "createdTime" : 0,
+      "debugSettings" : null,
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "24626b90-ec3f-11f0-bb6b-45643ceafb13"
+      },
+      "name" : "clear offline alarm",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.action.TbClearAlarmNode"
     } ],
     "ruleChainConnections" : null
   },

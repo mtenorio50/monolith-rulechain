@@ -66,19 +66,19 @@
       "type" : "Success"
     }, {
       "fromIndex" : 4,
+      "toIndex" : 20,
+      "type" : "Success"
+    }, {
+      "fromIndex" : 4,
+      "toIndex" : 21,
+      "type" : "Success"
+    }, {
+      "fromIndex" : 4,
       "toIndex" : 22,
       "type" : "Success"
     }, {
       "fromIndex" : 4,
-      "toIndex" : 24,
-      "type" : "Success"
-    }, {
-      "fromIndex" : 4,
-      "toIndex" : 26,
-      "type" : "Success"
-    }, {
-      "fromIndex" : 4,
-      "toIndex" : 27,
+      "toIndex" : 23,
       "type" : "Success"
     }, {
       "fromIndex" : 7,
@@ -105,16 +105,8 @@
       "toIndex" : 11,
       "type" : "Success"
     }, {
-      "fromIndex" : 15,
-      "toIndex" : 20,
-      "type" : "Success"
-    }, {
       "fromIndex" : 16,
       "toIndex" : 11,
-      "type" : "Success"
-    }, {
-      "fromIndex" : 16,
-      "toIndex" : 21,
       "type" : "Success"
     }, {
       "fromIndex" : 17,
@@ -128,22 +120,6 @@
       "fromIndex" : 18,
       "toIndex" : 19,
       "type" : "Success"
-    }, {
-      "fromIndex" : 22,
-      "toIndex" : 23,
-      "type" : "True"
-    }, {
-      "fromIndex" : 24,
-      "toIndex" : 25,
-      "type" : "True"
-    }, {
-      "fromIndex" : 26,
-      "toIndex" : 28,
-      "type" : "True"
-    }, {
-      "fromIndex" : 27,
-      "toIndex" : 29,
-      "type" : "True"
     } ],
     "firstNodeIndex" : 7,
     "nodes" : [ {
@@ -272,14 +248,14 @@
       },
       "configuration" : {
         "scriptLang" : "JS",
-        "jsScript" : "var nowTs = Date.now();\r\n\r\nfunction toNum(v, def) {\r\n  var n = Number(v);\r\n  return isFinite(n) ? n : def;\r\n}\r\n\r\n// ---- Config (match your cadence) ----\r\nvar HB_INTERVAL_MS = 30000;   // same as your gateway evaluator\r\nvar STALE_AT = 3;\r\nvar OFFLINE_AT = 5;\r\n\r\nvar STALE_MS = STALE_AT * HB_INTERVAL_MS;\r\nvar OFFLINE_MS = OFFLINE_AT * HB_INTERVAL_MS;\r\n\r\n// ---- Read last-seen + previous offlineSince from metadata ----\r\nvar gwLast = toNum(metadata.ss_gwLatestHbTs, 0);\r\nvar psu1Last = toNum(metadata.ss_psu1LatestHbTs, 0);\r\nvar psu2Last = toNum(metadata.ss_psu2LatestHbTs, 0);\r\n\r\nvar gwPrevOff = toNum(metadata.ss_gwOfflineSinceTs, 0);\r\nvar psu1PrevOff = toNum(metadata.ss_psu1OfflineSinceTs, 0);\r\nvar psu2PrevOff = toNum(metadata.ss_psu2OfflineSinceTs, 0);\r\n\r\n// ---- Helper to compute path + offlineSince ----\r\nfunction evalOne(lastSeenTs, prevOfflineSinceTs) {\r\n  var commPath = \"UNKNOWN\";\r\n  var offlineSinceTs = 0;\r\n\r\n  if (lastSeenTs > 0) {\r\n    var age = nowTs - lastSeenTs;\r\n    if (age < 0) age = 0;\r\n\r\n    if (age >= OFFLINE_MS) commPath = \"OFFLINE\";\r\n    else if (age >= STALE_MS) commPath = \"STALE\";\r\n    else commPath = \"ONLINE\";\r\n  }\r\n\r\n  var previouslyOffline = (prevOfflineSinceTs > 0);\r\n  var currentlyOffline = (commPath === \"OFFLINE\");\r\n\r\n  if (currentlyOffline) {\r\n    if (previouslyOffline) offlineSinceTs = prevOfflineSinceTs;\r\n    else offlineSinceTs = lastSeenTs + OFFLINE_MS; // official offline start\r\n  } else {\r\n    offlineSinceTs = 0;\r\n  }\r\n\r\n  return {\r\n    commPath: commPath,\r\n    offlineSinceTs: offlineSinceTs,\r\n    offlineStart: (!previouslyOffline && currentlyOffline && offlineSinceTs > 0),\r\n    offlineEnd: (previouslyOffline && !currentlyOffline)\r\n  };\r\n}\r\n\r\n// ---- Evaluate three entities ----\r\nvar gw = evalOne(gwLast, gwPrevOff);\r\nvar p1 = evalOne(psu1Last, psu1PrevOff);\r\nvar p2 = evalOne(psu2Last, psu2PrevOff);\r\n\r\n\r\n// If gateway isn't OK, PSU comm status is UNREACHABLE (don’t raise PSU offline transitions)\r\nif (gw.commPath === \"STALE\" || gw.commPath === \"OFFLINE\") {\r\n  p1.commPath = \"UNREACHABLE\";\r\n  p2.commPath = \"UNREACHABLE\";\r\n\r\n  // Keep previous offlineSinceTs as-is (don’t start/stop outages while gateway is down)\r\n  p1.offlineSinceTs = psu1PrevOff;\r\n  p2.offlineSinceTs = psu2PrevOff;\r\n\r\n  // Suppress PSU transitions while unreachable\r\n  p1.offlineStart = false; p1.offlineEnd = false;\r\n  p2.offlineStart = false; p2.offlineEnd = false;\r\n}\r\n\r\n// Optional: one-cycle grace right after gateway recovers to avoid immediate false PSU alarms\r\nif (gw.offlineEnd) {\r\n  p1.commPath = \"UNREACHABLE\";\r\n  p2.commPath = \"UNREACHABLE\";\r\n  p1.offlineStart = false; p1.offlineEnd = false;\r\n  p2.offlineStart = false; p2.offlineEnd = false;\r\n}\r\n\r\n\r\n\r\n// ---- Save attrs (server) ----\r\nmsg.gwCommPath = gw.commPath;\r\nmsg.gwOfflineSinceTs = gw.offlineSinceTs;\r\n\r\nmsg.psu1CommPath = p1.commPath;\r\nmsg.psu1OfflineSinceTs = p1.offlineSinceTs;\r\n\r\nmsg.psu2CommPath = p2.commPath;\r\nmsg.psu2OfflineSinceTs = p2.offlineSinceTs;\r\n\r\n// ---- Transition flags ----\r\nmetadata.gwOfflineStartEvent = gw.offlineStart;\r\nmetadata.gwOfflineEndEvent   = gw.offlineEnd;\r\n\r\nmetadata.psu1OfflineStartEvent = p1.offlineStart;\r\nmetadata.psu1OfflineEndEvent   = p1.offlineEnd;\r\n\r\nmetadata.psu2OfflineStartEvent = p2.offlineStart;\r\nmetadata.psu2OfflineEndEvent   = p2.offlineEnd;\r\n\r\nmetadata._nowTs = nowTs;\r\n\r\n// ---- msgType ----\r\n// Keep your existing single start/end path for gateway if you want,\r\n// but we’ll drive alarms using the metadata flags.\r\nreturn { msg: msg, metadata: metadata, msgType: \"NO_EVENT\" };\r\n",
+        "jsScript" : "var nowTs = Date.now();\r\n\r\nfunction toNum(v, def) {\r\n  var n = Number(v);\r\n  return isFinite(n) ? n : def;\r\n}\r\n\r\n// ---- Config (match your cadence) ----\r\nvar HB_INTERVAL_MS = 30000;   // same as your gateway evaluator\r\nvar STALE_AT = 3;\r\nvar OFFLINE_AT = 5;\r\n\r\nvar STALE_MS = STALE_AT * HB_INTERVAL_MS;\r\nvar OFFLINE_MS = OFFLINE_AT * HB_INTERVAL_MS;\r\n\r\n// ---- Read last-seen + previous offlineSince from metadata ----\r\nvar gwLast = toNum(metadata.ss_gwLatestHbTs, 0);\r\nvar psu1Last = toNum(metadata.ss_psu1LatestHbTs, 0);\r\nvar psu2Last = toNum(metadata.ss_psu2LatestHbTs, 0);\r\n\r\nvar gwPrevOff = toNum(metadata.ss_gwOfflineSinceTs, 0);\r\nvar psu1PrevOff = toNum(metadata.ss_psu1OfflineSinceTs, 0);\r\nvar psu2PrevOff = toNum(metadata.ss_psu2OfflineSinceTs, 0);\r\n\r\n// ---- Helper to compute path + offlineSince ----\r\nfunction evalOne(lastSeenTs, prevOfflineSinceTs) {\r\n  var commPath = \"UNKNOWN\";\r\n  var offlineSinceTs = 0;\r\n\r\n  if (lastSeenTs > 0) {\r\n    var age = nowTs - lastSeenTs;\r\n    if (age < 0) age = 0;\r\n\r\n    if (age >= OFFLINE_MS) commPath = \"OFFLINE\";\r\n    else if (age >= STALE_MS) commPath = \"STALE\";\r\n    else commPath = \"ONLINE\";\r\n  }\r\n\r\n  var previouslyOffline = (prevOfflineSinceTs > 0);\r\n  var currentlyOffline = (commPath === \"OFFLINE\");\r\n\r\n  if (currentlyOffline) {\r\n    if (previouslyOffline) offlineSinceTs = prevOfflineSinceTs;\r\n    else offlineSinceTs = lastSeenTs + OFFLINE_MS; // official offline start\r\n  } else {\r\n    offlineSinceTs = 0;\r\n  }\r\n\r\n  return {\r\n    commPath: commPath,\r\n    offlineSinceTs: offlineSinceTs,\r\n    offlineStart: (!previouslyOffline && currentlyOffline && offlineSinceTs > 0),\r\n    offlineEnd: (previouslyOffline && !currentlyOffline)\r\n  };\r\n}\r\n\r\n// ---- Evaluate three entities ----\r\nvar gw = evalOne(gwLast, gwPrevOff);\r\nvar p1 = evalOne(psu1Last, psu1PrevOff);\r\nvar p2 = evalOne(psu2Last, psu2PrevOff);\r\n\r\n\r\n// If gateway isn't OK, preserve last-known PSU offline state.\r\n// - If PSU was already offline -> keep OFFLINE\r\n// - Otherwise -> UNREACHABLE\r\nif (gw.commPath !== \"ONLINE\") {\r\n  const p1WasOffline = (psu1PrevOff > 0);\r\n  const p2WasOffline = (psu2PrevOff > 0);\r\n\r\n  p1.commPath = p1WasOffline ? \"OFFLINE\" : \"UNREACHABLE\";\r\n  p2.commPath = p2WasOffline ? \"OFFLINE\" : \"UNREACHABLE\";\r\n\r\n  // Preserve offlineSinceTs (don’t start/stop outages while gateway is down)\r\n  p1.offlineSinceTs = psu1PrevOff;\r\n  p2.offlineSinceTs = psu2PrevOff;\r\n\r\n  // Suppress transitions while gateway is down (avoid false start/end)\r\n  p1.offlineStart = false; p1.offlineEnd = false;\r\n  p2.offlineStart = false; p2.offlineEnd = false;\r\n}\r\n\r\n\r\n\r\n// ---- Save attrs (server) ----\r\nmsg.gwCommPath = gw.commPath;\r\nmsg.gwOfflineSinceTs = gw.offlineSinceTs;\r\n\r\nmsg.psu1CommPath = p1.commPath;\r\nmsg.psu1OfflineSinceTs = p1.offlineSinceTs;\r\n\r\nmsg.psu2CommPath = p2.commPath;\r\nmsg.psu2OfflineSinceTs = p2.offlineSinceTs;\r\n\r\n// ---- Transition flags ----\r\nmetadata.gwOfflineStartEvent = gw.offlineStart;\r\nmetadata.gwOfflineEndEvent   = gw.offlineEnd;\r\n\r\nmetadata.psu1OfflineStartEvent = p1.offlineStart;\r\nmetadata.psu1OfflineEndEvent   = p1.offlineEnd;\r\n\r\nmetadata.psu2OfflineStartEvent = p2.offlineStart;\r\nmetadata.psu2OfflineEndEvent   = p2.offlineEnd;\r\n\r\nmetadata._nowTs = nowTs;\r\n\r\n// ---- msgType ----\r\n// Keep your existing single start/end path for gateway if you want,\r\n// but we’ll drive alarms using the metadata flags.\r\nreturn { msg: msg, metadata: metadata, msgType: \"NO_EVENT\" };\r\n",
         "tbelScript" : "// function Transform(msg, metadata, msgType) {\r\n\r\nconst nowTs = Date.now();\r\n\r\n// latestHeartbeatTs was loaded by the originator attributes node\r\nconst hbRaw = metadata.ss_latestHeartbeatTs;\r\nconst hbTs = hbRaw != null ? Number(hbRaw) : 0;\r\n\r\nlet psuOfflineLive = false;\r\nlet psuCommPath = \"UNKNOWN\";\r\n\r\nif (hbTs > 0) {\r\n    const delta = nowTs - hbTs;\r\n\r\n    // Get heartbeat interval from attributes, default 30s\r\n    let hbIntervalMs = 30000; // fallback\r\n\r\n    if (metadata.ss_heartbeatIntervalMs != null) {\r\n        hbIntervalMs = Number(metadata.ss_heartbeatIntervalMs);\r\n    } else if (msg.heartbeatIntervalMs != null) {\r\n        hbIntervalMs = Number(msg.heartbeatIntervalMs);\r\n    }\r\n\r\n    // How many heartbeat cycles have we effectively missed?\r\n    const cycles = delta / hbIntervalMs;\r\n\r\n    if (cycles <= 3) {                     // <= 3 cycles\r\n        psuOfflineLive = false;\r\n        psuCommPath = \"OK\";\r\n    } else if (cycles <= 10) {             // >3 and <=10 cycles\r\n        psuOfflineLive = false;\r\n        psuCommPath = \"STALE_HEARTBEAT\";\r\n    } else {                               // >10 cycles\r\n        psuOfflineLive = true;\r\n        psuCommPath = \"OFFLINE\";\r\n    }\r\n}\r\n\r\n// attach results to msg\r\nmsg.psuOfflineLive = psuOfflineLive;\r\nmsg.psuCommPath    = psuCommPath;\r\n\r\n// --- OFFLINE SINCE CALC (simple + with reset) -----------------\r\n\r\nlet offlineSinceTs = 0;\r\n\r\n// Only track when truly OFFLINE.\r\n// Start at the timestamp of the last heartbeat we saw.\r\nif (psuCommPath === \"OFFLINE\" && hbTs > 0) {\r\n    offlineSinceTs = hbTs;\r\n}\r\n\r\n// Add to msg so it gets saved\r\nmsg.offlineSinceTs = offlineSinceTs;\r\n\r\n\r\n// --- LAST OUTAGE TRACKING ---------------------------------\r\n\r\nconst prevOfflineSince = metadata.ss_offlineSinceTs\r\n    ? Number(metadata.ss_offlineSinceTs)\r\n    : 0;\r\n\r\nlet lastOutageStartTs = metadata.ss_lastOutageStartTs\r\n    ? Number(metadata.ss_lastOutageStartTs)\r\n    : 0;\r\n\r\nlet lastOutageDurationMs = metadata.ss_lastOutageDurationMs\r\n    ? Number(metadata.ss_lastOutageDurationMs)\r\n    : 0;\r\n\r\nconst currentlyOffline = (psuCommPath === \"OFFLINE\");\r\nconst previouslyOffline = (prevOfflineSince > 0);\r\n\r\n// Detect recovery: was offline before, now online/stale\r\nif (previouslyOffline && !currentlyOffline) {\r\n    lastOutageStartTs = prevOfflineSince;\r\n    lastOutageDurationMs = nowTs - prevOfflineSince;\r\n}\r\n\r\n// Save them\r\nmsg.lastOutageStartTs = lastOutageStartTs;\r\nmsg.lastOutageDurationMs = lastOutageDurationMs;\r\n\r\n// --- OUTAGE EVENT FLAG FOR HISTORY ---------------------------\r\n\r\n// Default: no outage event\r\nmetadata.outageEvent = \"false\";\r\n\r\n// Detect recovery: was offline before, now not offline\r\nif (previouslyOffline && !currentlyOffline) {\r\n    metadata.outageEvent = \"true\";\r\n}\r\n\r\n\r\nreturn {\r\n    msg: msg,\r\n    metadata: metadata,\r\n    msgType: \"POST_ATTRIBUTES_REQUEST\"\r\n};\r\n\r\n// }\r\n"
       },
       "configurationVersion" : 0,
       "createdTime" : 0,
       "debugSettings" : {
         "allEnabled" : false,
-        "allEnabledUntil" : 1768174185758,
+        "allEnabledUntil" : 1768440207508,
         "failuresEnabled" : false
       },
       "externalId" : null,
@@ -311,7 +287,7 @@
       "createdTime" : 0,
       "debugSettings" : {
         "allEnabled" : false,
-        "allEnabledUntil" : 1767741251161,
+        "allEnabledUntil" : 1768440261394,
         "failuresEnabled" : false
       },
       "externalId" : null,
@@ -327,8 +303,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 1090,
-        "layoutY" : 30
+        "layoutX" : 1118,
+        "layoutY" : 20
       },
       "configuration" : {
         "timeoutInSeconds" : 60
@@ -470,8 +446,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 1214,
-        "layoutY" : 582
+        "layoutX" : 1199,
+        "layoutY" : 487
       },
       "configuration" : {
         "defaultTTL" : 0,
@@ -484,7 +460,7 @@
       "createdTime" : 0,
       "debugSettings" : {
         "allEnabled" : false,
-        "allEnabledUntil" : 1767842326408,
+        "allEnabledUntil" : 1768440238480,
         "failuresEnabled" : false
       },
       "externalId" : null,
@@ -512,7 +488,7 @@
       "createdTime" : 0,
       "debugSettings" : {
         "allEnabled" : false,
-        "allEnabledUntil" : 1765915162085,
+        "allEnabledUntil" : 1768440261394,
         "failuresEnabled" : false
       },
       "externalId" : null,
@@ -540,7 +516,7 @@
       "createdTime" : 0,
       "debugSettings" : {
         "allEnabled" : false,
-        "allEnabledUntil" : 1768174482026,
+        "allEnabledUntil" : 1768440238480,
         "failuresEnabled" : false
       },
       "externalId" : null,
@@ -568,7 +544,7 @@
       "createdTime" : 0,
       "debugSettings" : {
         "allEnabled" : false,
-        "allEnabledUntil" : 1765923547808,
+        "allEnabledUntil" : 1768440238480,
         "failuresEnabled" : false
       },
       "externalId" : null,
@@ -596,7 +572,7 @@
       "createdTime" : 0,
       "debugSettings" : {
         "allEnabled" : false,
-        "allEnabledUntil" : 1765923877921,
+        "allEnabledUntil" : 1768440238480,
         "failuresEnabled" : false
       },
       "externalId" : null,
@@ -624,7 +600,7 @@
       "createdTime" : 0,
       "debugSettings" : {
         "allEnabled" : false,
-        "allEnabledUntil" : 1765923559139,
+        "allEnabledUntil" : 1768440238480,
         "failuresEnabled" : false
       },
       "externalId" : null,
@@ -668,8 +644,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 1142,
-        "layoutY" : 90
+        "layoutX" : 1157,
+        "layoutY" : 80
       },
       "configuration" : {
         "scriptLang" : "JS",
@@ -696,8 +672,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 1148,
-        "layoutY" : 177
+        "layoutX" : 1153,
+        "layoutY" : 165
       },
       "configuration" : {
         "timeoutInSeconds" : 60
@@ -722,67 +698,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 1187,
-        "layoutY" : 422
-      },
-      "configuration" : {
-        "scriptLang" : "TBEL",
-        "alarmDetailsBuildJs" : "var details = {};\nif (metadata.prevAlarmDetails) {\n    details = JSON.parse(metadata.prevAlarmDetails);\n    //remove prevAlarmDetails from metadata\n    delete metadata.prevAlarmDetails;\n    //now metadata is the same as it comes IN this rule node\n}\n\n\nreturn details;",
-        "alarmDetailsBuildTbel" : "return { \"reason\": \"outageEvent\", \"event\": msg.outageEvent };",
-        "useMessageAlarmData" : false,
-        "overwriteAlarmDetails" : false,
-        "alarmType" : "GATEWAY OFFLINE",
-        "severity" : "CRITICAL",
-        "propagate" : false,
-        "relationTypes" : [ ],
-        "propagateToOwner" : false,
-        "propagateToOwnerHierarchy" : false,
-        "propagateToTenant" : false,
-        "dynamicSeverity" : false
-      },
-      "configurationVersion" : 0,
-      "createdTime" : 0,
-      "debugSettings" : null,
-      "externalId" : null,
-      "id" : {
-        "entityType" : "RULE_NODE",
-        "id" : "a5e85680-ec3e-11f0-80c0-fdc442896b74"
-      },
-      "name" : "alarm offline starts",
-      "queueName" : null,
-      "ruleChainId" : null,
-      "singletonMode" : false,
-      "type" : "org.thingsboard.rule.engine.action.TbCreateAlarmNode"
-    }, {
-      "additionalInfo" : {
-        "description" : "",
-        "layoutX" : 941,
-        "layoutY" : 449
-      },
-      "configuration" : {
-        "scriptLang" : "TBEL",
-        "alarmDetailsBuildJs" : "var details = {};\nif (metadata.prevAlarmDetails) {\n    details = JSON.parse(metadata.prevAlarmDetails);\n    //remove prevAlarmDetails from metadata\n    delete metadata.prevAlarmDetails;\n    //now metadata is the same as it comes IN this rule node\n}\n\n\nreturn details;",
-        "alarmDetailsBuildTbel" : "return { \"reason\": \"outageEvent\", \"event\": msg.outageEvent };",
-        "alarmType" : "GATEWAY OFFLINE"
-      },
-      "configurationVersion" : 0,
-      "createdTime" : 0,
-      "debugSettings" : null,
-      "externalId" : null,
-      "id" : {
-        "entityType" : "RULE_NODE",
-        "id" : "24626b90-ec3f-11f0-bb6b-45643ceafb13"
-      },
-      "name" : "clear offline alarm",
-      "queueName" : null,
-      "ruleChainId" : null,
-      "singletonMode" : false,
-      "type" : "org.thingsboard.rule.engine.action.TbClearAlarmNode"
-    }, {
-      "additionalInfo" : {
-        "description" : "",
-        "layoutX" : 279,
-        "layoutY" : 563
+        "layoutX" : 325,
+        "layoutY" : 523
       },
       "configuration" : {
         "scriptLang" : "TBEL",
@@ -805,42 +722,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 273,
-        "layoutY" : 648
-      },
-      "configuration" : {
-        "scriptLang" : "TBEL",
-        "alarmDetailsBuildJs" : "var details = {};\nif (metadata.prevAlarmDetails) {\n    details = JSON.parse(metadata.prevAlarmDetails);\n    //remove prevAlarmDetails from metadata\n    delete metadata.prevAlarmDetails;\n    //now metadata is the same as it comes IN this rule node\n}\n\n\nreturn details;",
-        "alarmDetailsBuildTbel" : "var details = {};\nif (metadata.prevAlarmDetails != null) {\n    details = JSON.parse(metadata.prevAlarmDetails);\n    //remove prevAlarmDetails from metadata\n    metadata.remove('prevAlarmDetails');\n    //now metadata is the same as it comes IN this rule node\n}\n\n\nreturn details;",
-        "useMessageAlarmData" : false,
-        "overwriteAlarmDetails" : false,
-        "alarmType" : "PSU1_OFFLINE",
-        "severity" : "MAJOR",
-        "propagate" : false,
-        "relationTypes" : [ ],
-        "propagateToOwner" : false,
-        "propagateToOwnerHierarchy" : false,
-        "propagateToTenant" : false,
-        "dynamicSeverity" : false
-      },
-      "configurationVersion" : 0,
-      "createdTime" : 0,
-      "debugSettings" : null,
-      "externalId" : null,
-      "id" : {
-        "entityType" : "RULE_NODE",
-        "id" : "c09c9660-ef38-11f0-80c0-fdc442896b74"
-      },
-      "name" : "PSU1 Create Alarm",
-      "queueName" : null,
-      "ruleChainId" : null,
-      "singletonMode" : false,
-      "type" : "org.thingsboard.rule.engine.action.TbCreateAlarmNode"
-    }, {
-      "additionalInfo" : {
-        "description" : "",
-        "layoutX" : 485,
-        "layoutY" : 568
+        "layoutX" : 531,
+        "layoutY" : 528
       },
       "configuration" : {
         "scriptLang" : "TBEL",
@@ -863,33 +746,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 493,
-        "layoutY" : 651
-      },
-      "configuration" : {
-        "scriptLang" : "TBEL",
-        "alarmDetailsBuildJs" : "var details = {};\nif (metadata.prevAlarmDetails) {\n    details = JSON.parse(metadata.prevAlarmDetails);\n    //remove prevAlarmDetails from metadata\n    delete metadata.prevAlarmDetails;\n    //now metadata is the same as it comes IN this rule node\n}\n\n\nreturn details;",
-        "alarmDetailsBuildTbel" : "var details = {};\nif (metadata.prevAlarmDetails != null) {\n    details = JSON.parse(metadata.prevAlarmDetails);\n    //remove prevAlarmDetails from metadata\n    metadata.remove('prevAlarmDetails');\n    //now metadata is the same as it comes IN this rule node\n}\n\n\nreturn details;",
-        "alarmType" : "PSU1_OFFLINE"
-      },
-      "configurationVersion" : 0,
-      "createdTime" : 0,
-      "debugSettings" : null,
-      "externalId" : null,
-      "id" : {
-        "entityType" : "RULE_NODE",
-        "id" : "80d970b1-ef3e-11f0-bb6b-45643ceafb13"
-      },
-      "name" : "PSU1 Clear Alarm",
-      "queueName" : null,
-      "ruleChainId" : null,
-      "singletonMode" : false,
-      "type" : "org.thingsboard.rule.engine.action.TbClearAlarmNode"
-    }, {
-      "additionalInfo" : {
-        "description" : "",
-        "layoutX" : 708,
-        "layoutY" : 575
+        "layoutX" : 754,
+        "layoutY" : 535
       },
       "configuration" : {
         "scriptLang" : "TBEL",
@@ -916,8 +774,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 915,
-        "layoutY" : 578
+        "layoutX" : 961,
+        "layoutY" : 538
       },
       "configuration" : {
         "scriptLang" : "TBEL",
@@ -944,52 +802,14 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 712,
-        "layoutY" : 651
+        "layoutX" : 374,
+        "layoutY" : 706
       },
       "configuration" : {
-        "scriptLang" : "TBEL",
-        "alarmDetailsBuildJs" : "var details = {};\nif (metadata.prevAlarmDetails) {\n    details = JSON.parse(metadata.prevAlarmDetails);\n    //remove prevAlarmDetails from metadata\n    delete metadata.prevAlarmDetails;\n    //now metadata is the same as it comes IN this rule node\n}\n\n\nreturn details;",
-        "alarmDetailsBuildTbel" : "var details = {};\nif (metadata.prevAlarmDetails != null) {\n    details = JSON.parse(metadata.prevAlarmDetails);\n    //remove prevAlarmDetails from metadata\n    metadata.remove('prevAlarmDetails');\n    //now metadata is the same as it comes IN this rule node\n}\n\n\nreturn details;",
-        "useMessageAlarmData" : false,
-        "overwriteAlarmDetails" : false,
-        "alarmType" : "PSU2_OFFLINE",
-        "severity" : "MAJOR",
-        "propagate" : false,
-        "relationTypes" : [ ],
-        "propagateToOwner" : false,
-        "propagateToOwnerHierarchy" : false,
-        "propagateToTenant" : false,
-        "dynamicSeverity" : false
-      },
-      "configurationVersion" : 0,
-      "createdTime" : 0,
-      "debugSettings" : {
-        "allEnabled" : false,
-        "allEnabledUntil" : 0,
-        "failuresEnabled" : false
-      },
-      "externalId" : null,
-      "id" : {
-        "entityType" : "RULE_NODE",
-        "id" : "457471d2-ef40-11f0-931e-d77481df73d2"
-      },
-      "name" : "PSU2 Create Alarm",
-      "queueName" : null,
-      "ruleChainId" : null,
-      "singletonMode" : false,
-      "type" : "org.thingsboard.rule.engine.action.TbCreateAlarmNode"
-    }, {
-      "additionalInfo" : {
-        "description" : "",
-        "layoutX" : 925,
-        "layoutY" : 664
-      },
-      "configuration" : {
-        "scriptLang" : "TBEL",
-        "alarmDetailsBuildJs" : "var details = {};\nif (metadata.prevAlarmDetails) {\n    details = JSON.parse(metadata.prevAlarmDetails);\n    //remove prevAlarmDetails from metadata\n    delete metadata.prevAlarmDetails;\n    //now metadata is the same as it comes IN this rule node\n}\n\n\nreturn details;",
-        "alarmDetailsBuildTbel" : "var details = {};\nif (metadata.prevAlarmDetails != null) {\n    details = JSON.parse(metadata.prevAlarmDetails);\n    //remove prevAlarmDetails from metadata\n    metadata.remove('prevAlarmDetails');\n    //now metadata is the same as it comes IN this rule node\n}\n\n\nreturn details;",
-        "alarmType" : "PSU2_OFFLINE"
+        "scope" : "CLIENT_SCOPE",
+        "keys" : [ "LEDStates" ],
+        "sendAttributesDeletedNotification" : false,
+        "notifyDevice" : false
       },
       "configurationVersion" : 0,
       "createdTime" : 0,
@@ -997,13 +817,13 @@
       "externalId" : null,
       "id" : {
         "entityType" : "RULE_NODE",
-        "id" : "fbc10b00-ef50-11f0-a6fc-1dffa956f056"
+        "id" : "567c7a40-f24c-11f0-811f-85cbe32c8b38"
       },
-      "name" : "PSU2 CLEAR ALARM",
+      "name" : "del",
       "queueName" : null,
       "ruleChainId" : null,
       "singletonMode" : false,
-      "type" : "org.thingsboard.rule.engine.action.TbClearAlarmNode"
+      "type" : "org.thingsboard.rule.engine.telemetry.TbMsgDeleteAttributesNode"
     } ],
     "ruleChainConnections" : null
   },

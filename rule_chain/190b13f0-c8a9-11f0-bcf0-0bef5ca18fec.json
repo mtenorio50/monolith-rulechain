@@ -1,0 +1,283 @@
+{
+  "entityType" : "RULE_CHAIN",
+  "entity" : {
+    "additionalInfo" : {
+      "description" : ""
+    },
+    "configuration" : null,
+    "debugMode" : false,
+    "externalId" : null,
+    "firstRuleNodeId" : null,
+    "id" : {
+      "entityType" : "RULE_CHAIN",
+      "id" : "190b13f0-c8a9-11f0-bcf0-0bef5ca18fec"
+    },
+    "name" : "Weather",
+    "root" : false,
+    "type" : "CORE"
+  },
+  "metaData" : {
+    "connections" : [ {
+      "fromIndex" : 0,
+      "toIndex" : 1,
+      "type" : "Success"
+    }, {
+      "fromIndex" : 1,
+      "toIndex" : 2,
+      "type" : "Success"
+    }, {
+      "fromIndex" : 2,
+      "toIndex" : 3,
+      "type" : "Success"
+    }, {
+      "fromIndex" : 2,
+      "toIndex" : 4,
+      "type" : "Success"
+    }, {
+      "fromIndex" : 4,
+      "toIndex" : 5,
+      "type" : "Success"
+    }, {
+      "fromIndex" : 5,
+      "toIndex" : 6,
+      "type" : "Success"
+    } ],
+    "firstNodeIndex" : null,
+    "nodes" : [ {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 54,
+        "layoutY" : 17
+      },
+      "configuration" : {
+        "msgCount" : 0,
+        "periodInSeconds" : 600,
+        "scriptLang" : "JS",
+        "jsScript" : "var msg = {};\r\nvar metadata = {};\r\nvar msgType = \"POST_ATTRIBUTES_REQUEST\";\r\nreturn { msg: msg, metadata: metadata, msgType: msgType };",
+        "tbelScript" : "var msg = { temp: 42, humidity: 77 };\nvar metadata = { data: 40 };\nvar msgType = \"POST_TELEMETRY_REQUEST\";\n\nreturn { msg: msg, metadata: metadata, msgType: msgType };",
+        "originatorId" : "09328470-f187-11f0-a6fc-1dffa956f056",
+        "originatorType" : "DEVICE"
+      },
+      "configurationVersion" : 2,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 1768516526559,
+        "failuresEnabled" : false
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "f9b1df10-f18a-11f0-a6fc-1dffa956f056"
+      },
+      "name" : "Weather Auckland",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.debug.TbMsgGeneratorNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 57,
+        "layoutY" : 93
+      },
+      "configuration" : {
+        "restEndpointUrlPattern" : "https://api.open-meteo.com/v1/forecast?latitude=-36.8485&longitude=174.7635&current=precipitation,rain,wind_speed_10m,cloud_cover,relative_humidity_2m,temperature_2m,weather_code&timezone=auto&forecast_days=1",
+        "requestMethod" : "GET",
+        "useSimpleClientHttpFactory" : false,
+        "parseToPlainText" : false,
+        "ignoreRequestBody" : false,
+        "enableProxy" : false,
+        "useSystemProxyProperties" : false,
+        "proxyScheme" : null,
+        "proxyHost" : null,
+        "proxyPort" : 0,
+        "proxyUser" : null,
+        "proxyPassword" : null,
+        "readTimeoutMs" : 0,
+        "maxParallelRequestsCount" : 0,
+        "headers" : {
+          "Content-Type" : "application/json"
+        },
+        "credentials" : {
+          "type" : "anonymous"
+        },
+        "maxInMemoryBufferSizeInKb" : 256
+      },
+      "configurationVersion" : 3,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 1768515602294,
+        "failuresEnabled" : false
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "4e228a40-f18b-11f0-80c0-fdc442896b74"
+      },
+      "name" : "Weather API call",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.rest.TbRestApiCallNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 357,
+        "layoutY" : 24
+      },
+      "configuration" : {
+        "scriptLang" : "JS",
+        "jsScript" : "var body = msg;\r\nif (typeof body === \"string\") body = JSON.parse(body);\r\n\r\nvar c = body.current || {};\r\n\r\nvar code  = Number(c.weather_code);\r\nvar cloud = Number(c.cloud_cover || 0);\r\nvar rain  = Number(c.rain || 0);\r\nvar precip= Number(c.precipitation || 0);\r\nvar wind  = Number(c.wind_speed_10m || 0);\r\n\r\n// Explicit CLEAR definition\r\nvar isClear = (cloud <= 20) && (Math.max(rain, precip) === 0) && (wind < 20);\r\n\r\nvar envMode = \"CLEAR\";\r\n\r\n// Primary: weather_code for rain/storm\r\nif (code === 95 || code === 96 || code === 99) envMode = \"TSTORM\";\r\nelse if (code === 65 || code === 82) envMode = \"HEAVY_RAIN\";\r\nelse if ([51,53,55,61,63,80,81].indexOf(code) !== -1) envMode = \"RAIN\";\r\nelse {\r\n  if (isClear) envMode = \"CLEAR\";\r\n  else if (cloud >= 80) envMode = \"CLOUDY\";\r\n  else envMode = \"PARTLY_CLOUDY\";\r\n}\r\n\r\n// Wind override\r\nif (wind >= 30) envMode = \"WINDY\";\r\n\r\nreturn {\r\n  msg: {\r\n    weatherFetchedAt: Date.now(),\r\n    envMode: String(envMode)\r\n  },\r\n  metadata: metadata,\r\n  msgType: msgType\r\n};\r\n",
+        "tbelScript" : "var body = msg;\r\nif (typeof body === \"string\") {\r\n  try { body = JSON.parse(body); } catch (e) { body = {}; }\r\n}\r\n\r\nvar c = body.current || {};\r\nvar d = body.daily || {};\r\n\r\nvar out = {\r\n  weatherFetchedAt: Date.now(),\r\n\r\n  // Convenience keys for widgets / rules\r\n  tempC: c.temperature_2m,\r\n  cloudCoverPct: c.cloud_cover,\r\n  precipitationMm: c.precipitation,\r\n  windKph: c.wind_speed_10m,\r\n  windGustKph: c.wind_gusts_10m,\r\n  weatherCode: c.weather_code,\r\n  uvIndex: c.uv_index,\r\n  uvIndexClearSky: c.uv_index_clear_sky,\r\n  isDay: c.is_day,\r\n\r\n  // Daily summary (keep as strings/arrays; Open-Meteo returns arrays for daily)\r\n  sunrise: d.sunrise,\r\n  sunset: d.sunset,\r\n  tempMaxC: d.temperature_2m_max,\r\n  tempMinC: d.temperature_2m_min,\r\n  uvMax: d.uv_index_max,\r\n  uvClearSkyMax: d.uv_index_clear_sky_max,\r\n\r\n  // Full payload for debugging\r\n  weatherRaw: JSON.stringify(body)\r\n};\r\n\r\nreturn { msg: out, metadata: metadata, msgType: msgType };\r\n"
+      },
+      "configurationVersion" : 0,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 1768516526559,
+        "failuresEnabled" : false
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "4e228a41-f18b-11f0-80c0-fdc442896b74"
+      },
+      "name" : "REST API Call",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.transform.TbTransformMsgNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 748,
+        "layoutY" : 24
+      },
+      "configuration" : {
+        "processingSettings" : {
+          "type" : "ON_EVERY_MESSAGE"
+        },
+        "scope" : "SERVER_SCOPE",
+        "notifyDevice" : false,
+        "sendAttributesUpdatedNotification" : false,
+        "updateAttributesOnlyOnValueChange" : true
+      },
+      "configurationVersion" : 3,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 1768439876642,
+        "failuresEnabled" : false
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "6863e250-f18b-11f0-a6fc-1dffa956f056"
+      },
+      "name" : "save weather",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.telemetry.TbMsgAttributesNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 351,
+        "layoutY" : 115
+      },
+      "configuration" : {
+        "originatorSource" : "ENTITY",
+        "preserveOriginatorIfCustomer" : false,
+        "entityType" : "DEVICE",
+        "entityNamePattern" : "Uni_PSU1",
+        "relationsQuery" : {
+          "fetchLastLevelOnly" : false,
+          "direction" : "FROM",
+          "maxLevel" : 1,
+          "filters" : [ {
+            "relationType" : "Contains",
+            "entityTypes" : [ "DEVICE" ]
+          } ]
+        }
+      },
+      "configurationVersion" : 1,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 1768431161782,
+        "failuresEnabled" : false
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "4bf473c0-f198-11f0-bb6b-45643ceafb13"
+      },
+      "name" : "change origin",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.transform.TbChangeOriginatorNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 361,
+        "layoutY" : 213
+      },
+      "configuration" : {
+        "scriptLang" : "JS",
+        "jsScript" : "metadata.oneway = true;\r\n\r\nreturn {\r\n  msg: {\r\n    method: \"setEnvMode\",\r\n    params: {\r\n      envMode: msg.envMode,\r\n      \r\n    }\r\n  },\r\n  metadata: metadata,\r\n  msgType: \"RPC_CALL_FROM_SERVER_TO_DEVICE\"\r\n};",
+        "tbelScript" : "return {\r\n  msg: {\r\n    method: \"setEnvMode\",\r\n    params: {\r\n      envMode: msg.envMode,\r\n      envIntensity: msg.envIntensity\r\n    }\r\n  },\r\n  metadata: metadata,\r\n  msgType: msgType\r\n};\r\n"
+      },
+      "configurationVersion" : 0,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 1768432229818,
+        "failuresEnabled" : false
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "1c219aa0-f199-11f0-bb6b-45643ceafb13"
+      },
+      "name" : "build RPC",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.transform.TbTransformMsgNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 365,
+        "layoutY" : 311
+      },
+      "configuration" : {
+        "timeoutInSeconds" : 60
+      },
+      "configurationVersion" : 0,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 1768439903910,
+        "failuresEnabled" : false
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "1c219aa1-f199-11f0-bb6b-45643ceafb13"
+      },
+      "name" : "rpc call",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.rpc.TbSendRPCRequestNode"
+    } ],
+    "ruleChainConnections" : null
+  },
+  "relations" : [ ],
+  "attributes" : {
+    "SERVER_SCOPE" : [ ]
+  }
+}

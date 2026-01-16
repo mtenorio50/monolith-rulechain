@@ -1,0 +1,296 @@
+{
+  "entityType" : "DEVICE",
+  "entity" : {
+    "additionalInfo" : {
+      "gateway" : false,
+      "overwriteActivityTime" : false,
+      "description" : ""
+    },
+    "customerId" : {
+      "entityType" : "CUSTOMER",
+      "id" : "13814000-1dd2-11b2-8080-808080808080"
+    },
+    "deviceData" : {
+      "configuration" : {
+        "type" : "DEFAULT"
+      },
+      "transportConfiguration" : {
+        "type" : "MQTT"
+      }
+    },
+    "deviceProfileId" : {
+      "entityType" : "DEVICE_PROFILE",
+      "id" : "b036a070-d94b-11f0-81e4-bd8a9470eef2"
+    },
+    "externalId" : null,
+    "firmwareId" : null,
+    "id" : {
+      "entityType" : "DEVICE",
+      "id" : "c710b1a0-d94b-11f0-bcba-9f87c351edd8"
+    },
+    "label" : "",
+    "name" : "Uni_PSU1",
+    "ownerId" : null,
+    "softwareId" : null,
+    "type" : "Uni Monolith"
+  },
+  "credentials" : {
+    "credentialsId" : "CPOp4wKeePGflEY3SouD",
+    "credentialsType" : "ACCESS_TOKEN",
+    "credentialsValue" : null
+  },
+  "relations" : [ ],
+  "attributes" : {
+    "SERVER_SCOPE" : [ {
+      "booleanValue" : true,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "active",
+      "lastUpdateTs" : 1768503322130,
+      "longValue" : null,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "gwCommPath",
+      "lastUpdateTs" : 1768518927379,
+      "longValue" : null,
+      "strValue" : "ONLINE"
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "gwLatestHbTs",
+      "lastUpdateTs" : 1768529428405,
+      "longValue" : 1768529428393,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "gwOfflineSinceTs",
+      "lastUpdateTs" : 1768517331260,
+      "longValue" : 0,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "inactivityAlarmTime",
+      "lastUpdateTs" : 1768448990787,
+      "longValue" : 1768448990784,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "lastActivityTime",
+      "lastUpdateTs" : 1768529446696,
+      "longValue" : 1768529444819,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "lastConnectTime",
+      "lastUpdateTs" : 1768519948877,
+      "longValue" : 1768519948877,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "lastDisconnectTime",
+      "lastUpdateTs" : 1768519939778,
+      "longValue" : 1768519939778,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "psu1CommPath",
+      "lastUpdateTs" : 1768518927889,
+      "longValue" : null,
+      "strValue" : "ONLINE"
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "psu1LatestHbTs",
+      "lastUpdateTs" : 1768529444520,
+      "longValue" : 1768529444508,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "psu1OfflineSinceTs",
+      "lastUpdateTs" : 1768517331660,
+      "longValue" : 0,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "psu2CommPath",
+      "lastUpdateTs" : 1768518927889,
+      "longValue" : null,
+      "strValue" : "ONLINE"
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "psu2LatestHbTs",
+      "lastUpdateTs" : 1768529444874,
+      "longValue" : 1768529444865,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "psu2OfflineSinceTs",
+      "lastUpdateTs" : 1768517331660,
+      "longValue" : 0,
+      "strValue" : null
+    } ],
+    "SHARED_SCOPE" : [ {
+      "booleanValue" : true,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "animationDirection",
+      "lastUpdateTs" : 1768525696745,
+      "longValue" : null,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "animationInterval",
+      "lastUpdateTs" : 1768526650151,
+      "longValue" : 1000,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "animationType",
+      "lastUpdateTs" : 1768528258324,
+      "longValue" : 2,
+      "strValue" : null
+    }, {
+      "booleanValue" : false,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "axis",
+      "lastUpdateTs" : 1768526605544,
+      "longValue" : null,
+      "strValue" : null
+    }, {
+      "booleanValue" : true,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "backlightOn",
+      "lastUpdateTs" : 1768526635727,
+      "longValue" : null,
+      "strValue" : null
+    }, {
+      "booleanValue" : true,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "isAnimating",
+      "lastUpdateTs" : 1768528238752,
+      "longValue" : null,
+      "strValue" : null
+    }, {
+      "booleanValue" : false,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "isWeatherAnimating",
+      "lastUpdateTs" : 1768527999513,
+      "longValue" : null,
+      "strValue" : null
+    }, {
+      "booleanValue" : true,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "ledOn",
+      "lastUpdateTs" : 1768520019394,
+      "longValue" : null,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : 56.6666666666667,
+      "jsonValue" : null,
+      "key" : "primaryB",
+      "lastUpdateTs" : 1768526625552,
+      "longValue" : null,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : 198.333333333333,
+      "jsonValue" : null,
+      "key" : "primaryG",
+      "lastUpdateTs" : 1768526624171,
+      "longValue" : null,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : 226.666666666667,
+      "jsonValue" : null,
+      "key" : "primaryR",
+      "lastUpdateTs" : 1768526623236,
+      "longValue" : null,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : 226.666666666667,
+      "jsonValue" : null,
+      "key" : "secondaryB",
+      "lastUpdateTs" : 1768526632186,
+      "longValue" : null,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : 28.3333333333333,
+      "jsonValue" : null,
+      "key" : "secondaryG",
+      "lastUpdateTs" : 1768526633032,
+      "longValue" : null,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : 226.666666666667,
+      "jsonValue" : null,
+      "key" : "secondaryR",
+      "lastUpdateTs" : 1768526628365,
+      "longValue" : null,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "wallB",
+      "lastUpdateTs" : 1768525696745,
+      "longValue" : 128,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "wallG",
+      "lastUpdateTs" : 1768525696745,
+      "longValue" : 128,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "wallR",
+      "lastUpdateTs" : 1768526614416,
+      "longValue" : 255,
+      "strValue" : null
+    } ]
+  },
+  "calculatedFields" : [ ]
+}

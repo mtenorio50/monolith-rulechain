@@ -46,7 +46,7 @@
       "doubleValue" : null,
       "jsonValue" : null,
       "key" : "active",
-      "lastUpdateTs" : 1768503322130,
+      "lastUpdateTs" : 1768781929873,
       "longValue" : null,
       "strValue" : null
     }, {
@@ -54,7 +54,7 @@
       "doubleValue" : null,
       "jsonValue" : null,
       "key" : "gwCommPath",
-      "lastUpdateTs" : 1768518927379,
+      "lastUpdateTs" : 1768783072328,
       "longValue" : null,
       "strValue" : "ONLINE"
     }, {
@@ -62,15 +62,15 @@
       "doubleValue" : null,
       "jsonValue" : null,
       "key" : "gwLatestHbTs",
-      "lastUpdateTs" : 1768529428405,
-      "longValue" : 1768529428393,
+      "lastUpdateTs" : 1768785892001,
+      "longValue" : 1768785891988,
       "strValue" : null
     }, {
       "booleanValue" : null,
       "doubleValue" : null,
       "jsonValue" : null,
       "key" : "gwOfflineSinceTs",
-      "lastUpdateTs" : 1768517331260,
+      "lastUpdateTs" : 1768782547838,
       "longValue" : 0,
       "strValue" : null
     }, {
@@ -78,39 +78,39 @@
       "doubleValue" : null,
       "jsonValue" : null,
       "key" : "inactivityAlarmTime",
-      "lastUpdateTs" : 1768448990787,
-      "longValue" : 1768448990784,
+      "lastUpdateTs" : 1768780986474,
+      "longValue" : 1768780986472,
       "strValue" : null
     }, {
       "booleanValue" : null,
       "doubleValue" : null,
       "jsonValue" : null,
       "key" : "lastActivityTime",
-      "lastUpdateTs" : 1768529446696,
-      "longValue" : 1768529444819,
+      "lastUpdateTs" : 1768785918040,
+      "longValue" : 1768785915720,
       "strValue" : null
     }, {
       "booleanValue" : null,
       "doubleValue" : null,
       "jsonValue" : null,
       "key" : "lastConnectTime",
-      "lastUpdateTs" : 1768519948877,
-      "longValue" : 1768519948877,
+      "lastUpdateTs" : 1768785654519,
+      "longValue" : 1768785654519,
       "strValue" : null
     }, {
       "booleanValue" : null,
       "doubleValue" : null,
       "jsonValue" : null,
       "key" : "lastDisconnectTime",
-      "lastUpdateTs" : 1768519939778,
-      "longValue" : 1768519939778,
+      "lastUpdateTs" : 1768785651513,
+      "longValue" : 1768785651513,
       "strValue" : null
     }, {
       "booleanValue" : null,
       "doubleValue" : null,
       "jsonValue" : null,
       "key" : "psu1CommPath",
-      "lastUpdateTs" : 1768518927889,
+      "lastUpdateTs" : 1768783073411,
       "longValue" : null,
       "strValue" : "ONLINE"
     }, {
@@ -118,15 +118,15 @@
       "doubleValue" : null,
       "jsonValue" : null,
       "key" : "psu1LatestHbTs",
-      "lastUpdateTs" : 1768529444520,
-      "longValue" : 1768529444508,
+      "lastUpdateTs" : 1768785900054,
+      "longValue" : 1768785900042,
       "strValue" : null
     }, {
       "booleanValue" : null,
       "doubleValue" : null,
       "jsonValue" : null,
       "key" : "psu1OfflineSinceTs",
-      "lastUpdateTs" : 1768517331660,
+      "lastUpdateTs" : 1768782775635,
       "longValue" : 0,
       "strValue" : null
     }, {
@@ -134,7 +134,7 @@
       "doubleValue" : null,
       "jsonValue" : null,
       "key" : "psu2CommPath",
-      "lastUpdateTs" : 1768518927889,
+      "lastUpdateTs" : 1768783073411,
       "longValue" : null,
       "strValue" : "ONLINE"
     }, {
@@ -142,24 +142,24 @@
       "doubleValue" : null,
       "jsonValue" : null,
       "key" : "psu2LatestHbTs",
-      "lastUpdateTs" : 1768529444874,
-      "longValue" : 1768529444865,
+      "lastUpdateTs" : 1768785900397,
+      "longValue" : 1768785900385,
       "strValue" : null
     }, {
       "booleanValue" : null,
       "doubleValue" : null,
       "jsonValue" : null,
       "key" : "psu2OfflineSinceTs",
-      "lastUpdateTs" : 1768517331660,
+      "lastUpdateTs" : 1768782548284,
       "longValue" : 0,
       "strValue" : null
     } ],
     "SHARED_SCOPE" : [ {
-      "booleanValue" : true,
+      "booleanValue" : false,
       "doubleValue" : null,
       "jsonValue" : null,
       "key" : "animationDirection",
-      "lastUpdateTs" : 1768525696745,
+      "lastUpdateTs" : 1768769814729,
       "longValue" : null,
       "strValue" : null
     }, {
@@ -167,15 +167,15 @@
       "doubleValue" : null,
       "jsonValue" : null,
       "key" : "animationInterval",
-      "lastUpdateTs" : 1768526650151,
-      "longValue" : 1000,
+      "lastUpdateTs" : 1768764185079,
+      "longValue" : 300,
       "strValue" : null
     }, {
       "booleanValue" : null,
       "doubleValue" : null,
       "jsonValue" : null,
       "key" : "animationType",
-      "lastUpdateTs" : 1768528258324,
+      "lastUpdateTs" : 1768783056295,
       "longValue" : 2,
       "strValue" : null
     }, {
@@ -183,15 +183,15 @@
       "doubleValue" : null,
       "jsonValue" : null,
       "key" : "axis",
-      "lastUpdateTs" : 1768526605544,
+      "lastUpdateTs" : 1768783425275,
       "longValue" : null,
       "strValue" : null
     }, {
-      "booleanValue" : true,
+      "booleanValue" : false,
       "doubleValue" : null,
       "jsonValue" : null,
       "key" : "backlightOn",
-      "lastUpdateTs" : 1768526635727,
+      "lastUpdateTs" : 1768783700240,
       "longValue" : null,
       "strValue" : null
     }, {
@@ -199,7 +199,7 @@
       "doubleValue" : null,
       "jsonValue" : null,
       "key" : "isAnimating",
-      "lastUpdateTs" : 1768528238752,
+      "lastUpdateTs" : 1768783697866,
       "longValue" : null,
       "strValue" : null
     }, {
@@ -207,7 +207,7 @@
       "doubleValue" : null,
       "jsonValue" : null,
       "key" : "isWeatherAnimating",
-      "lastUpdateTs" : 1768527999513,
+      "lastUpdateTs" : 1768769637177,
       "longValue" : null,
       "strValue" : null
     }, {
@@ -215,7 +215,7 @@
       "doubleValue" : null,
       "jsonValue" : null,
       "key" : "ledOn",
-      "lastUpdateTs" : 1768520019394,
+      "lastUpdateTs" : 1768783622999,
       "longValue" : null,
       "strValue" : null
     }, {
@@ -271,24 +271,24 @@
       "doubleValue" : null,
       "jsonValue" : null,
       "key" : "wallB",
-      "lastUpdateTs" : 1768525696745,
-      "longValue" : 128,
+      "lastUpdateTs" : 1768783667350,
+      "longValue" : 0,
       "strValue" : null
     }, {
       "booleanValue" : null,
       "doubleValue" : null,
       "jsonValue" : null,
       "key" : "wallG",
-      "lastUpdateTs" : 1768525696745,
-      "longValue" : 128,
+      "lastUpdateTs" : 1768783678360,
+      "longValue" : 255,
       "strValue" : null
     }, {
       "booleanValue" : null,
       "doubleValue" : null,
       "jsonValue" : null,
       "key" : "wallR",
-      "lastUpdateTs" : 1768526614416,
-      "longValue" : 255,
+      "lastUpdateTs" : 1768783682282,
+      "longValue" : 0,
       "strValue" : null
     } ]
   },

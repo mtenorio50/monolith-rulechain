@@ -1,0 +1,215 @@
+{
+  "entityType" : "RULE_CHAIN",
+  "entity" : {
+    "additionalInfo" : {
+      "description" : ""
+    },
+    "configuration" : null,
+    "debugMode" : false,
+    "externalId" : null,
+    "firstRuleNodeId" : {
+      "entityType" : "RULE_NODE",
+      "id" : "bb526630-0135-11f1-97a3-7f388ca9270b"
+    },
+    "id" : {
+      "entityType" : "RULE_CHAIN",
+      "id" : "b9253860-fd84-11f0-af6b-ed31bbb7e885"
+    },
+    "name" : "Tunnel",
+    "root" : false,
+    "type" : "CORE"
+  },
+  "metaData" : {
+    "connections" : [ {
+      "fromIndex" : 0,
+      "toIndex" : 1,
+      "type" : "Success"
+    }, {
+      "fromIndex" : 1,
+      "toIndex" : 2,
+      "type" : "Post telemetry"
+    }, {
+      "fromIndex" : 2,
+      "toIndex" : 3,
+      "type" : "Success"
+    } ],
+    "firstNodeIndex" : 0,
+    "nodes" : [ {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 52,
+        "layoutY" : 221
+      },
+      "configuration" : {
+        "persistAlarmRulesState" : false,
+        "fetchAlarmRulesStateOnStart" : false
+      },
+      "configurationVersion" : 1,
+      "createdTime" : 0,
+      "debugSettings" : null,
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "bb526630-0135-11f1-97a3-7f388ca9270b"
+      },
+      "name" : "tunnel device profile",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.profile.TbDeviceProfileNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 53,
+        "layoutY" : 298
+      },
+      "configuration" : {
+        "version" : 0
+      },
+      "configurationVersion" : 0,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 1770165726992,
+        "failuresEnabled" : false
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "bb526631-0135-11f1-97a3-7f388ca9270b"
+      },
+      "name" : "tunnel message type switch",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.filter.TbMsgTypeSwitchNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 58,
+        "layoutY" : 393
+      },
+      "configuration" : {
+        "scriptLang" : "JS",
+        "jsScript" : "// Copy telemetry heartbeat timestamp into server attribute\r\n// Expects telemetry key: hbTs (epoch ms)\r\n/*\r\n//var ts = msg.latestHeartbeat;\r\n\r\n// If hbTs is missing, do nothing\r\nif (ts === undefined || ts === null) {\r\n  return null;\r\n}\r\n\r\nreturn {\r\n  msg: {\r\n    latestHbTs: Number(ts)\r\n  },\r\n  metadata: metadata,\r\n  msgType: \"POST_ATTRIBUTES_REQUEST\"\r\n};\r\n*/\r\n\r\nvar out = {};\r\n\r\n// Gateway heartbeat -> update latestHeartbeatTs\r\nif (msg && msg.latestHeartbeat !== undefined) out.latestHbTs = Date.now();\r\n\r\n// If nothing relevant arrived, emit empty (so downstream save node won't write junk)\r\nreturn { msg: out, metadata: metadata, msgType: \"POST_ATTRIBUTES_REQUEST\" };\r\n",
+        "tbelScript" : "// On incoming telemetry message, store TB receive timestamp as server attribute\r\nvar ts = msg.ts || metadata.ts || Date.now();\r\n\r\nreturn {\r\n  msg: {\r\n    latestHeartbeatTs: ts\r\n  },\r\n  metadata: metadata,\r\n  msgType: \"POST_ATTRIBUTES_REQUEST\"\r\n};\r\n"
+      },
+      "configurationVersion" : 0,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 1770251208397,
+        "failuresEnabled" : false
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "78758f80-015e-11f1-b497-d94af11be718"
+      },
+      "name" : "save heartbeat",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.transform.TbTransformMsgNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 56,
+        "layoutY" : 481
+      },
+      "configuration" : {
+        "processingSettings" : {
+          "type" : "ON_EVERY_MESSAGE"
+        },
+        "scope" : "SERVER_SCOPE",
+        "notifyDevice" : false,
+        "sendAttributesUpdatedNotification" : false,
+        "updateAttributesOnlyOnValueChange" : true
+      },
+      "configurationVersion" : 3,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 1770251215378,
+        "failuresEnabled" : false
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "4eb0a7b0-0169-11f1-8287-999f1041c10d"
+      },
+      "name" : "save heartbeat",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.telemetry.TbMsgAttributesNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 47,
+        "layoutY" : 43
+      },
+      "configuration" : {
+        "msgCount" : 0,
+        "periodInSeconds" : 60,
+        "scriptLang" : "TBEL",
+        "jsScript" : "var msg = { temp: 42, humidity: 77 };\nvar metadata = { data: 40 };\nvar msgType = \"POST_TELEMETRY_REQUEST\";\n\nreturn { msg: msg, metadata: metadata, msgType: msgType };",
+        "tbelScript" : "var msg = {};\nvar metadata = {};\nvar msgType = \"\";\n\nreturn { msg: msg, metadata: metadata, msgType: msgType };",
+        "originatorId" : "2b7d7ec0-fd6e-11f0-af6b-ed31bbb7e885",
+        "originatorType" : "ENTITY_GROUP"
+      },
+      "configurationVersion" : 2,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 1770175577689,
+        "failuresEnabled" : false
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "6a652251-016a-11f1-b73f-d5302d04056a"
+      },
+      "name" : "offline tick",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.debug.TbMsgGeneratorNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 353,
+        "layoutY" : 129
+      },
+      "configuration" : {
+        "defaultTTL" : 0,
+        "useServerTs" : false,
+        "processingSettings" : {
+          "type" : "ON_EVERY_MESSAGE"
+        }
+      },
+      "configurationVersion" : 1,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 1770248533567,
+        "failuresEnabled" : false
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "69a72bb0-0179-11f1-97a3-7f388ca9270b"
+      },
+      "name" : "save tele",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.telemetry.TbMsgTimeseriesNode"
+    } ],
+    "ruleChainConnections" : null
+  },
+  "relations" : [ ],
+  "attributes" : {
+    "SERVER_SCOPE" : [ ]
+  }
+}

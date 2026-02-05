@@ -32,6 +32,22 @@
       "fromIndex" : 2,
       "toIndex" : 3,
       "type" : "Success"
+    }, {
+      "fromIndex" : 3,
+      "toIndex" : 6,
+      "type" : "Success"
+    }, {
+      "fromIndex" : 4,
+      "toIndex" : 6,
+      "type" : "Success"
+    }, {
+      "fromIndex" : 6,
+      "toIndex" : 7,
+      "type" : "Success"
+    }, {
+      "fromIndex" : 7,
+      "toIndex" : 8,
+      "type" : "Success"
     } ],
     "firstNodeIndex" : 0,
     "nodes" : [ {
@@ -114,8 +130,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 56,
-        "layoutY" : 481
+        "layoutX" : 378,
+        "layoutY" : 290
       },
       "configuration" : {
         "processingSettings" : {
@@ -155,14 +171,14 @@
         "scriptLang" : "TBEL",
         "jsScript" : "var msg = { temp: 42, humidity: 77 };\nvar metadata = { data: 40 };\nvar msgType = \"POST_TELEMETRY_REQUEST\";\n\nreturn { msg: msg, metadata: metadata, msgType: msgType };",
         "tbelScript" : "var msg = {};\nvar metadata = {};\nvar msgType = \"\";\n\nreturn { msg: msg, metadata: metadata, msgType: msgType };",
-        "originatorId" : "2b7d7ec0-fd6e-11f0-af6b-ed31bbb7e885",
-        "originatorType" : "ENTITY_GROUP"
+        "originatorId" : "ea393e30-c687-11f0-a4c6-e5fe644790a2",
+        "originatorType" : "DEVICE"
       },
       "configurationVersion" : 2,
       "createdTime" : 0,
       "debugSettings" : {
         "allEnabled" : false,
-        "allEnabledUntil" : 1770175577689,
+        "allEnabledUntil" : 1770259198507,
         "failuresEnabled" : false
       },
       "externalId" : null,
@@ -178,8 +194,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 353,
-        "layoutY" : 129
+        "layoutX" : 380,
+        "layoutY" : 542
       },
       "configuration" : {
         "defaultTTL" : 0,
@@ -205,10 +221,101 @@
       "ruleChainId" : null,
       "singletonMode" : false,
       "type" : "org.thingsboard.rule.engine.telemetry.TbMsgTimeseriesNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 458,
+        "layoutY" : 61
+      },
+      "configuration" : {
+        "tellFailureIfAbsent" : true,
+        "fetchTo" : "METADATA",
+        "clientAttributeNames" : [ ],
+        "sharedAttributeNames" : [ ],
+        "serverAttributeNames" : [ "psuState", "latestHbTs" ],
+        "latestTsKeyNames" : [ ],
+        "getLatestValueWithTs" : false
+      },
+      "configurationVersion" : 1,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 1770259952226,
+        "failuresEnabled" : false
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "cfca0990-0236-11f1-af6b-ed31bbb7e885"
+      },
+      "name" : "fetch attr",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.metadata.TbGetAttributesNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 826,
+        "layoutY" : 57
+      },
+      "configuration" : {
+        "scriptLang" : "JS",
+        "jsScript" : "var now = Date.now();\r\n\r\nvar last = Number(metadata.ss_latestHbTs || 0);\r\nif (!last) {\r\n  return { msg: {}, metadata: metadata, msgType: \"POST_ATTRIBUTES_REQUEST\" };\r\n}\r\n\r\nvar STALE_MS = 120000;    // 2 min\r\nvar OFFLINE_MS = 240000;  // 4 min\r\n\r\nvar age = now - last;\r\n\r\nvar state = \"ONLINE\";\r\nif (age >= OFFLINE_MS) state = \"OFFLINE\";\r\nelse if (age >= STALE_MS) state = \"STALE\";\r\n\r\nvar prev = String(metadata.ss_psuState || \"\");\r\nif (prev === state) {\r\n  return { msg: {}, metadata: metadata, msgType: \"POST_ATTRIBUTES_REQUEST\" };\r\n}\r\n\r\nreturn {\r\n  msg: { psuState: state },\r\n  metadata: metadata,\r\n  msgType: \"POST_ATTRIBUTES_REQUEST\"\r\n};\r\n",
+        "tbelScript" : "return {msg: msg, metadata: metadata, msgType: msgType};"
+      },
+      "configurationVersion" : 0,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 1770259952226,
+        "failuresEnabled" : false
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "cfca30a0-0236-11f1-af6b-ed31bbb7e885"
+      },
+      "name" : "online eval",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.transform.TbTransformMsgNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 1157,
+        "layoutY" : 76
+      },
+      "configuration" : {
+        "processingSettings" : {
+          "type" : "ON_EVERY_MESSAGE"
+        },
+        "scope" : "SERVER_SCOPE",
+        "notifyDevice" : false,
+        "sendAttributesUpdatedNotification" : false,
+        "updateAttributesOnlyOnValueChange" : true
+      },
+      "configurationVersion" : 3,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 1770259952226,
+        "failuresEnabled" : false
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "e3092ed0-0238-11f1-97a3-7f388ca9270b"
+      },
+      "name" : "save online eval",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.telemetry.TbMsgAttributesNode"
     } ],
     "ruleChainConnections" : null
   },
-  "relations" : [ ],
   "attributes" : {
     "SERVER_SCOPE" : [ ]
   }

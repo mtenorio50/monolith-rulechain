@@ -130,8 +130,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 378,
-        "layoutY" : 290
+        "layoutX" : 331,
+        "layoutY" : 217
       },
       "configuration" : {
         "processingSettings" : {
@@ -224,15 +224,15 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 458,
-        "layoutY" : 61
+        "layoutX" : 374,
+        "layoutY" : 57
       },
       "configuration" : {
         "tellFailureIfAbsent" : true,
         "fetchTo" : "METADATA",
         "clientAttributeNames" : [ ],
         "sharedAttributeNames" : [ ],
-        "serverAttributeNames" : [ "psuState", "latestHbTs" ],
+        "serverAttributeNames" : [ "psuState", "latestHbTs", "offlineSinceTs" ],
         "latestTsKeyNames" : [ ],
         "getLatestValueWithTs" : false
       },
@@ -256,19 +256,19 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 826,
-        "layoutY" : 57
+        "layoutX" : 671,
+        "layoutY" : 56
       },
       "configuration" : {
         "scriptLang" : "JS",
-        "jsScript" : "var now = Date.now();\r\n\r\nvar last = Number(metadata.ss_latestHbTs || 0);\r\nif (!last) {\r\n  return { msg: {}, metadata: metadata, msgType: \"POST_ATTRIBUTES_REQUEST\" };\r\n}\r\n\r\nvar STALE_MS = 120000;    // 2 min\r\nvar OFFLINE_MS = 240000;  // 4 min\r\n\r\nvar age = now - last;\r\n\r\nvar state = \"ONLINE\";\r\nif (age >= OFFLINE_MS) state = \"OFFLINE\";\r\nelse if (age >= STALE_MS) state = \"STALE\";\r\n\r\nvar prev = String(metadata.ss_psuState || \"\");\r\nif (prev === state) {\r\n  return { msg: {}, metadata: metadata, msgType: \"POST_ATTRIBUTES_REQUEST\" };\r\n}\r\n\r\nreturn {\r\n  msg: { psuState: state },\r\n  metadata: metadata,\r\n  msgType: \"POST_ATTRIBUTES_REQUEST\"\r\n};\r\n",
+        "jsScript" : "\r\n//Last known working offline detection\r\n\r\nvar now = Date.now();\r\n\r\nvar last = Number(metadata.ss_latestHbTs || 0);\r\nif (!last) {\r\n  return { msg: {}, metadata: metadata, msgType: \"POST_ATTRIBUTES_REQUEST\" };\r\n}\r\n\r\nvar STALE_MS = 90000;    // 2 min = 120000\r\nvar OFFLINE_MS = 150000;  // 4 min = 240000\r\n\r\nvar age = now - last;\r\n\r\nvar state = \"ONLINE\";\r\nif (age >= OFFLINE_MS) {\r\n    state = \"OFFLINE\";\r\n} \r\nelse if (age >= STALE_MS) state = \"STALE\";\r\n\r\nvar prev = String(metadata.ss_psuState || \"\");\r\nif (prev === state) {\r\n  return { msg: {}, metadata: metadata, msgType: \"POST_ATTRIBUTES_REQUEST\" };\r\n}\r\n\r\nvar out = { psuState: state };\r\n\r\n// entering OFFLINE: stamp once\r\nif (state === \"OFFLINE\") {\r\n  out.offlineSinceTs = metadata.ss_latestHbTs;\r\n}\r\n\r\n// leaving OFFLINE: clear\r\nif (prev === \"OFFLINE\" && state !== \"OFFLINE\") {\r\n  out.offlineSinceTs = 0;\r\n}\r\n\r\nreturn {\r\n  msg: out,\r\n  metadata: metadata,\r\n  msgType: \"POST_ATTRIBUTES_REQUEST\"\r\n};\r\n\r\n",
         "tbelScript" : "return {msg: msg, metadata: metadata, msgType: msgType};"
       },
       "configurationVersion" : 0,
       "createdTime" : 0,
       "debugSettings" : {
         "allEnabled" : false,
-        "allEnabledUntil" : 1770259952226,
+        "allEnabledUntil" : 0,
         "failuresEnabled" : false
       },
       "externalId" : null,
@@ -284,8 +284,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 1157,
-        "layoutY" : 76
+        "layoutX" : 678,
+        "layoutY" : 145
       },
       "configuration" : {
         "processingSettings" : {
@@ -300,7 +300,7 @@
       "createdTime" : 0,
       "debugSettings" : {
         "allEnabled" : false,
-        "allEnabledUntil" : 1770259952226,
+        "allEnabledUntil" : 1770350847836,
         "failuresEnabled" : false
       },
       "externalId" : null,
@@ -316,6 +316,7 @@
     } ],
     "ruleChainConnections" : null
   },
+  "relations" : [ ],
   "attributes" : {
     "SERVER_SCOPE" : [ ]
   }

@@ -30,11 +30,15 @@
     }, {
       "fromIndex" : 1,
       "toIndex" : 2,
-      "type" : "Post telemetry"
+      "type" : "Post attributes"
     }, {
       "fromIndex" : 1,
       "toIndex" : 10,
       "type" : "Post attributes"
+    }, {
+      "fromIndex" : 1,
+      "toIndex" : 13,
+      "type" : "RPC Request from Device"
     }, {
       "fromIndex" : 2,
       "toIndex" : 3,
@@ -117,12 +121,12 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 347,
-        "layoutY" : 120
+        "layoutX" : 369,
+        "layoutY" : 106
       },
       "configuration" : {
         "scriptLang" : "JS",
-        "jsScript" : "var out = {};\r\n\r\n// Gateway heartbeat -> update latestHeartbeatTs\r\nif (msg && msg.latestHeartbeat !== undefined) out.latestHbTs = Date.now();\r\n\r\n// If nothing relevant arrived, emit empty (so downstream save node won't write junk)\r\nreturn { msg: out, metadata: metadata, msgType: \"POST_ATTRIBUTES_REQUEST\" };\r\n",
+        "jsScript" : "var out = {};\r\n\r\n// Gateway heartbeat -> update latestHeartbeatTs\r\nif (msg && msg.heartbeat !== undefined) out.latestHbTs = Date.now();\r\n\r\n// If nothing relevant arrived, emit empty (so downstream save node won't write junk)\r\nreturn { msg: out, metadata: metadata, msgType: \"POST_ATTRIBUTES_REQUEST\" };\r\n",
         "tbelScript" : "// On incoming telemetry message, store TB receive timestamp as server attribute\r\nvar ts = msg.ts || metadata.ts || Date.now();\r\n\r\nreturn {\r\n  msg: {\r\n    latestHeartbeatTs: ts\r\n  },\r\n  metadata: metadata,\r\n  msgType: \"POST_ATTRIBUTES_REQUEST\"\r\n};\r\n"
       },
       "configurationVersion" : 0,
@@ -393,12 +397,12 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 192,
-        "layoutY" : 536
+        "layoutX" : 177,
+        "layoutY" : 551
       },
       "configuration" : {
         "scope" : "CLIENT_SCOPE",
-        "keys" : [ "numStuds" ],
+        "keys" : [ "latestHeartbeat" ],
         "sendAttributesDeletedNotification" : false,
         "notifyDevice" : false
       },
@@ -445,10 +449,31 @@
       "ruleChainId" : null,
       "singletonMode" : false,
       "type" : "org.thingsboard.rule.engine.transform.TbDuplicateMsgToRelatedNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 484,
+        "layoutY" : 388
+      },
+      "configuration" : {
+        "timeoutInSeconds" : 60
+      },
+      "configurationVersion" : 0,
+      "createdTime" : 0,
+      "debugSettings" : null,
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "215d07a0-0555-11f1-846e-2de54e7eaf42"
+      },
+      "name" : "RPC",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.rpc.TbSendRPCRequestNode"
     } ],
     "ruleChainConnections" : null
   },
-  "relations" : [ ],
   "attributes" : {
     "SERVER_SCOPE" : [ ]
   }

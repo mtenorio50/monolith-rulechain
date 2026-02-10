@@ -38,7 +38,7 @@
     }, {
       "fromIndex" : 1,
       "toIndex" : 13,
-      "type" : "RPC Request from Device"
+      "type" : "Post telemetry"
     }, {
       "fromIndex" : 2,
       "toIndex" : 3,
@@ -280,14 +280,14 @@
       },
       "configuration" : {
         "scriptLang" : "JS",
-        "jsScript" : "\r\n//Last known working offline detection\r\n\r\nvar now = Date.now();\r\n\r\nvar last = Number(metadata.ss_latestHbTs || 0);\r\nif (!last) {\r\n  return { msg: {}, metadata: metadata, msgType: \"POST_ATTRIBUTES_REQUEST\" };\r\n}\r\n\r\nvar STALE_MS = 90000;    // 2 min = 120000\r\nvar OFFLINE_MS = 150000;  // 4 min = 240000\r\n\r\nvar age = now - last;\r\n\r\nvar state = \"ONLINE\";\r\nif (age >= OFFLINE_MS) {\r\n    state = \"OFFLINE\";\r\n} \r\nelse if (age >= STALE_MS) state = \"STALE\";\r\n\r\nvar prev = String(metadata.ss_psuState || \"\");\r\nif (prev === state) {\r\n  return { msg: {}, metadata: metadata, msgType: \"POST_ATTRIBUTES_REQUEST\" };\r\n}\r\n\r\nvar out = { psuState: state };\r\n\r\n// entering OFFLINE: stamp once\r\nif (state === \"OFFLINE\") {\r\n  out.offlineSinceTs = metadata.ss_latestHbTs;\r\n}\r\n\r\n// leaving OFFLINE: clear\r\nif (prev === \"OFFLINE\" && state !== \"OFFLINE\") {\r\n  out.offlineSinceTs = 0;\r\n}\r\n\r\n// build a telemetry event row on state change\r\nvar event = {\r\n  eventType: state + \"_START\",\r\n};\r\n\r\nreturn [\r\n  { msg: out,   metadata: metadata, msgType: \"POST_ATTRIBUTES_REQUEST\" },\r\n  { msg: event, metadata: metadata, msgType: \"POST_TELEMETRY_REQUEST\" }\r\n];\r\n\r\n",
+        "jsScript" : "\r\n//Last known working offline detection\r\n\r\nvar now = Date.now();\r\nvar last = Number(metadata.ss_latestHbTs || 0);\r\nif (!last) {\r\n  return { msg: {}, metadata: metadata, msgType: \"POST_ATTRIBUTES_REQUEST\" };\r\n}\r\n\r\nvar STALE_MS = 90000;    // 2 min = 120000\r\nvar OFFLINE_MS = 150000;  // 4 min = 240000\r\n\r\nvar age = now - last;\r\n\r\n// STATES\r\nvar state = \"ONLINE\";\r\nif (age >= OFFLINE_MS) {\r\n    state = \"OFFLINE\";\r\n} \r\nelse if (age >= STALE_MS) state = \"STALE\";\r\n\r\n\r\n// Previous state from attributes (already in your metadata)\r\nvar prev = String(metadata.ss_psuState || \"\");\r\nif (prev === state) {\r\n  return { msg: {}, metadata: metadata, msgType: \"POST_ATTRIBUTES_REQUEST\" };\r\n}\r\n\r\n// Attributes (current truth)\r\nvar out = { psuState: state };\r\n\r\n// entering OFFLINE: stamp once\r\nif (state === \"OFFLINE\") {\r\n  out.offlineSinceTs = last;\r\n}\r\n\r\n// leaving OFFLINE: clear\r\n\r\n\r\n// build a telemetry event row on state change\r\nvar telem = {\r\n  eventType: state + \"_START\",\r\n  \r\n};\r\n\r\n// markers for counting\r\n  if (state === \"STALE\") telem.staleEvent = 1;\r\n  if (state === \"OFFLINE\") telem.offlineEvent = 1;\r\n  // leaving OFFLINE: clear\r\n  if (prev === \"OFFLINE\" && state === \"ONLINE\") {\r\n  var since = Number(metadata.ss_offlineSinceTs || 0);\r\n  if (since > 0) telem.offlineOutageDurationMs = now - since;\r\n  out.offlineSinceTs = 0;\r\n}\r\n  \r\nreturn [\r\n  { msg: out,   metadata: metadata, msgType: \"POST_ATTRIBUTES_REQUEST\" },\r\n  { msg: telem, metadata: metadata, msgType: \"POST_TELEMETRY_REQUEST\" }\r\n];\r\n\r\n",
         "tbelScript" : "return {msg: msg, metadata: metadata, msgType: msgType};"
       },
       "configurationVersion" : 0,
       "createdTime" : 0,
       "debugSettings" : {
         "allEnabled" : false,
-        "allEnabledUntil" : 1770353520820,
+        "allEnabledUntil" : 1770765687618,
         "failuresEnabled" : false
       },
       "externalId" : null,
@@ -452,25 +452,29 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 484,
-        "layoutY" : 388
+        "layoutX" : 454,
+        "layoutY" : 360
       },
       "configuration" : {
-        "timeoutInSeconds" : 60
+        "defaultTTL" : 0,
+        "useServerTs" : false,
+        "processingSettings" : {
+          "type" : "ON_EVERY_MESSAGE"
+        }
       },
-      "configurationVersion" : 0,
+      "configurationVersion" : 1,
       "createdTime" : 0,
       "debugSettings" : null,
       "externalId" : null,
       "id" : {
         "entityType" : "RULE_NODE",
-        "id" : "215d07a0-0555-11f1-846e-2de54e7eaf42"
+        "id" : "c3bbab70-0607-11f1-9d47-5949a5c1cd4a"
       },
-      "name" : "RPC",
+      "name" : "save tele",
       "queueName" : null,
       "ruleChainId" : null,
       "singletonMode" : false,
-      "type" : "org.thingsboard.rule.engine.rpc.TbSendRPCRequestNode"
+      "type" : "org.thingsboard.rule.engine.telemetry.TbMsgTimeseriesNode"
     } ],
     "ruleChainConnections" : null
   },

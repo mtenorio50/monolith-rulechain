@@ -808,6 +808,30 @@
       "ruleChainId" : null,
       "singletonMode" : false,
       "type" : "org.thingsboard.rule.engine.telemetry.TbMsgDeleteAttributesNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 364,
+        "layoutY" : 696
+      },
+      "configuration" : {
+        "serviceIdMetaDataAttribute" : "serviceId",
+        "sessionIdMetaDataAttribute" : "sessionId",
+        "requestIdMetaDataAttribute" : "requestId"
+      },
+      "configurationVersion" : 0,
+      "createdTime" : 0,
+      "debugSettings" : null,
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "019fca40-07aa-11f1-b6d0-133d513d174e"
+      },
+      "name" : "rpc reply",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.rpc.TbSendRPCReplyNode"
     } ],
     "ruleChainConnections" : null
   },

@@ -75,7 +75,7 @@
       "doubleValue" : null,
       "jsonValue" : null,
       "key" : "active",
-      "lastUpdateTs" : 1771201012341,
+      "lastUpdateTs" : 1771271002293,
       "longValue" : null,
       "strValue" : null
     }, {
@@ -83,47 +83,47 @@
       "doubleValue" : null,
       "jsonValue" : null,
       "key" : "inactivityAlarmTime",
-      "lastUpdateTs" : 1771199697423,
-      "longValue" : 1771199697410,
+      "lastUpdateTs" : 1771210144120,
+      "longValue" : 1771210144100,
       "strValue" : null
     }, {
       "booleanValue" : null,
       "doubleValue" : null,
       "jsonValue" : null,
       "key" : "lastActivityTime",
-      "lastUpdateTs" : 1771202003296,
-      "longValue" : 1771202001460,
+      "lastUpdateTs" : 1771285120212,
+      "longValue" : 1771285119117,
       "strValue" : null
     }, {
       "booleanValue" : null,
       "doubleValue" : null,
       "jsonValue" : null,
       "key" : "lastConnectTime",
-      "lastUpdateTs" : 1771201012340,
-      "longValue" : 1771201012340,
+      "lastUpdateTs" : 1771271002292,
+      "longValue" : 1771271002292,
       "strValue" : null
     }, {
       "booleanValue" : null,
       "doubleValue" : null,
       "jsonValue" : null,
       "key" : "lastDisconnectTime",
-      "lastUpdateTs" : 1771199048301,
-      "longValue" : 1771199048301,
+      "lastUpdateTs" : 1771209514225,
+      "longValue" : 1771209514225,
       "strValue" : null
     }, {
       "booleanValue" : null,
       "doubleValue" : null,
       "jsonValue" : null,
       "key" : "latestHbTs",
-      "lastUpdateTs" : 1771201997256,
-      "longValue" : 1771201997237,
+      "lastUpdateTs" : 1771285124140,
+      "longValue" : 1771285124120,
       "strValue" : null
     }, {
       "booleanValue" : null,
       "doubleValue" : null,
       "jsonValue" : null,
       "key" : "offlineSinceTs",
-      "lastUpdateTs" : 1771201036843,
+      "lastUpdateTs" : 1771283711893,
       "longValue" : 0,
       "strValue" : null
     }, {
@@ -131,7 +131,7 @@
       "doubleValue" : null,
       "jsonValue" : null,
       "key" : "psuState",
-      "lastUpdateTs" : 1771201036843,
+      "lastUpdateTs" : 1771283711893,
       "longValue" : null,
       "strValue" : "ONLINE"
     } ],

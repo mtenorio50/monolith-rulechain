@@ -54,9 +54,9 @@
       "doubleValue" : null,
       "jsonValue" : null,
       "key" : "envMode",
-      "lastUpdateTs" : 1768708439633,
+      "lastUpdateTs" : 1771185931028,
       "longValue" : null,
-      "strValue" : "CLOUDY"
+      "strValue" : "PARTLY_CLOUDY"
     }, {
       "booleanValue" : null,
       "doubleValue" : null,
@@ -70,8 +70,8 @@
       "doubleValue" : null,
       "jsonValue" : null,
       "key" : "weatherFetchedAt",
-      "lastUpdateTs" : 1768785839552,
-      "longValue" : 1768785839534,
+      "lastUpdateTs" : 1771201530682,
+      "longValue" : 1771201530648,
       "strValue" : null
     } ],
     "SHARED_SCOPE" : [ ]

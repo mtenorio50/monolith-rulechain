@@ -1,0 +1,93 @@
+{
+  "entityType" : "DEVICE",
+  "entity" : {
+    "additionalInfo" : {
+      "gateway" : false,
+      "overwriteActivityTime" : false,
+      "description" : ""
+    },
+    "customerId" : {
+      "entityType" : "CUSTOMER",
+      "id" : "cface5d0-fd6e-11f0-b497-d94af11be718"
+    },
+    "deviceData" : {
+      "configuration" : {
+        "type" : "DEFAULT"
+      },
+      "transportConfiguration" : {
+        "type" : "DEFAULT"
+      }
+    },
+    "deviceProfileId" : {
+      "entityType" : "DEVICE_PROFILE",
+      "id" : "c7239d50-c687-11f0-a562-d9639f025684"
+    },
+    "externalId" : null,
+    "firmwareId" : null,
+    "id" : {
+      "entityType" : "DEVICE",
+      "id" : "2d6b3d20-c688-11f0-a4c6-e5fe644790a2"
+    },
+    "label" : "PSU4-Tunnel",
+    "name" : "PSU4-Tunnel",
+    "ownerId" : {
+      "entityType" : "CUSTOMER",
+      "id" : "cface5d0-fd6e-11f0-b497-d94af11be718"
+    },
+    "softwareId" : null,
+    "type" : "TunnelPSU"
+  },
+  "credentials" : {
+    "credentialsId" : "RJrNgYnOO4O8WLZB5DrB",
+    "credentialsType" : "ACCESS_TOKEN",
+    "credentialsValue" : null
+  },
+  "relations" : [ {
+    "additionalInfo" : null,
+    "from" : {
+      "entityType" : "ASSET",
+      "id" : "829fcde0-fd99-11f0-b497-d94af11be718"
+    },
+    "to" : {
+      "entityType" : "DEVICE",
+      "id" : "2d6b3d20-c688-11f0-a4c6-e5fe644790a2"
+    },
+    "type" : "Contains",
+    "typeGroup" : "COMMON",
+    "version" : 1013267623
+  }, {
+    "additionalInfo" : null,
+    "from" : {
+      "entityType" : "ASSET",
+      "id" : "d00e26b0-c8cb-11f0-bcf0-0bef5ca18fec"
+    },
+    "to" : {
+      "entityType" : "DEVICE",
+      "id" : "2d6b3d20-c688-11f0-a4c6-e5fe644790a2"
+    },
+    "type" : "Contains",
+    "typeGroup" : "COMMON",
+    "version" : 923939095
+  } ],
+  "attributes" : {
+    "SERVER_SCOPE" : [ {
+      "booleanValue" : false,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "active",
+      "lastUpdateTs" : 1770279481995,
+      "longValue" : null,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "inactivityAlarmTime",
+      "lastUpdateTs" : 1770279481979,
+      "longValue" : 1770279481911,
+      "strValue" : null
+    } ],
+    "SHARED_SCOPE" : [ ]
+  },
+  "calculatedFields" : [ ]
+}

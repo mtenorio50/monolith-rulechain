@@ -1,0 +1,141 @@
+{
+  "entityType" : "DEVICE",
+  "entity" : {
+    "additionalInfo" : {
+      "gateway" : false,
+      "overwriteActivityTime" : false,
+      "description" : ""
+    },
+    "customerId" : {
+      "entityType" : "CUSTOMER",
+      "id" : "fc56d570-6fce-11ef-a5e0-5fc873d75472"
+    },
+    "deviceData" : {
+      "configuration" : {
+        "type" : "DEFAULT"
+      },
+      "transportConfiguration" : {
+        "type" : "DEFAULT"
+      }
+    },
+    "deviceProfileId" : {
+      "entityType" : "DEVICE_PROFILE",
+      "id" : "c7239d50-c687-11f0-a562-d9639f025684"
+    },
+    "externalId" : null,
+    "firmwareId" : null,
+    "id" : {
+      "entityType" : "DEVICE",
+      "id" : "161fa570-c688-11f0-bcf0-0bef5ca18fec"
+    },
+    "label" : "PSU2-Tunnel",
+    "name" : "PSU2-Tunnel",
+    "ownerId" : {
+      "entityType" : "CUSTOMER",
+      "id" : "fc56d570-6fce-11ef-a5e0-5fc873d75472"
+    },
+    "softwareId" : null,
+    "type" : "TunnelPSU"
+  },
+  "credentials" : {
+    "credentialsId" : "0pVtIr4VJekigkn6edZC",
+    "credentialsType" : "ACCESS_TOKEN",
+    "credentialsValue" : null
+  },
+  "relations" : [ {
+    "additionalInfo" : null,
+    "from" : {
+      "entityType" : "ASSET",
+      "id" : "849b3330-cb19-11f0-82a9-69e5355364db"
+    },
+    "to" : {
+      "entityType" : "DEVICE",
+      "id" : "161fa570-c688-11f0-bcf0-0bef5ca18fec"
+    },
+    "type" : "Contains",
+    "typeGroup" : "COMMON",
+    "version" : 1013267577
+  }, {
+    "additionalInfo" : null,
+    "from" : {
+      "entityType" : "ASSET",
+      "id" : "d00e26b0-c8cb-11f0-bcf0-0bef5ca18fec"
+    },
+    "to" : {
+      "entityType" : "DEVICE",
+      "id" : "161fa570-c688-11f0-bcf0-0bef5ca18fec"
+    },
+    "type" : "Contains",
+    "typeGroup" : "COMMON",
+    "version" : 923939094
+  } ],
+  "attributes" : {
+    "SERVER_SCOPE" : [ {
+      "booleanValue" : true,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "active",
+      "lastUpdateTs" : 1771201013057,
+      "longValue" : null,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "inactivityAlarmTime",
+      "lastUpdateTs" : 1771199697409,
+      "longValue" : 1771199697408,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "lastActivityTime",
+      "lastUpdateTs" : 1771202005461,
+      "longValue" : 1771202003298,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "lastConnectTime",
+      "lastUpdateTs" : 1771201013057,
+      "longValue" : 1771201013057,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "lastDisconnectTime",
+      "lastUpdateTs" : 1771199053470,
+      "longValue" : 1771199053470,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "latestHbTs",
+      "lastUpdateTs" : 1771201999636,
+      "longValue" : 1771201999630,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "offlineSinceTs",
+      "lastUpdateTs" : 1771201038848,
+      "longValue" : 0,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "psuState",
+      "lastUpdateTs" : 1771201038848,
+      "longValue" : null,
+      "strValue" : "ONLINE"
+    } ],
+    "SHARED_SCOPE" : [ ]
+  },
+  "calculatedFields" : [ ]
+}

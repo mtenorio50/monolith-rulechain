@@ -71,11 +71,11 @@
   } ],
   "attributes" : {
     "SERVER_SCOPE" : [ {
-      "booleanValue" : false,
+      "booleanValue" : true,
       "doubleValue" : null,
       "jsonValue" : null,
       "key" : "active",
-      "lastUpdateTs" : 1770279437766,
+      "lastUpdateTs" : 1771279950675,
       "longValue" : null,
       "strValue" : null
     }, {
@@ -86,6 +86,54 @@
       "lastUpdateTs" : 1770279437629,
       "longValue" : 1770279437624,
       "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "lastActivityTime",
+      "lastUpdateTs" : 1771285106307,
+      "longValue" : 1771285105530,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "lastConnectTime",
+      "lastUpdateTs" : 1771281301106,
+      "longValue" : 1771281301106,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "lastDisconnectTime",
+      "lastUpdateTs" : 1771281223463,
+      "longValue" : 1771281223463,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "latestHbTs",
+      "lastUpdateTs" : 1771285089340,
+      "longValue" : 1771285089332,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "offlineSinceTs",
+      "lastUpdateTs" : 1771282474328,
+      "longValue" : 0,
+      "strValue" : null
+    }, {
+      "booleanValue" : null,
+      "doubleValue" : null,
+      "jsonValue" : null,
+      "key" : "psuState",
+      "lastUpdateTs" : 1771282474328,
+      "longValue" : null,
+      "strValue" : "ONLINE"
     } ],
     "SHARED_SCOPE" : [ ]
   },

@@ -1,0 +1,61 @@
+{
+  "entityType" : "CUSTOMER",
+  "entity" : {
+    "additionalInfo" : {
+      "description" : "Spain - Tunnel Dashboard",
+      "allowWhiteLabeling" : true,
+      "homeDashboardId" : null,
+      "homeDashboardHideToolbar" : true
+    },
+    "address" : null,
+    "address2" : null,
+    "city" : null,
+    "country" : null,
+    "customMenuId" : null,
+    "customerId" : null,
+    "email" : null,
+    "externalId" : null,
+    "id" : {
+      "entityType" : "CUSTOMER",
+      "id" : "cface5d0-fd6e-11f0-b497-d94af11be718"
+    },
+    "name" : "Spain",
+    "ownerId" : null,
+    "parentCustomerId" : null,
+    "phone" : null,
+    "state" : null,
+    "title" : "Spain",
+    "zip" : null
+  },
+  "relations" : [ {
+    "additionalInfo" : null,
+    "from" : {
+      "entityType" : "CUSTOMER",
+      "id" : "cface5d0-fd6e-11f0-b497-d94af11be718"
+    },
+    "to" : {
+      "entityType" : "ASSET",
+      "id" : "829fcde0-fd99-11f0-b497-d94af11be718"
+    },
+    "type" : "Contains",
+    "typeGroup" : "COMMON",
+    "version" : 1013266972
+  }, {
+    "additionalInfo" : null,
+    "from" : {
+      "entityType" : "USER",
+      "id" : "6d04b080-d84d-11ef-a273-3b232b10716f"
+    },
+    "to" : {
+      "entityType" : "CUSTOMER",
+      "id" : "cface5d0-fd6e-11f0-b497-d94af11be718"
+    },
+    "type" : "Contains",
+    "typeGroup" : "COMMON",
+    "version" : 1012190561
+  } ],
+  "attributes" : {
+    "SERVER_SCOPE" : [ ]
+  },
+  "calculatedFields" : [ ]
+}

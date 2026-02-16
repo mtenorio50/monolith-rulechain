@@ -33,11 +33,11 @@
       "type" : "Post attributes"
     }, {
       "fromIndex" : 1,
-      "toIndex" : 10,
+      "toIndex" : 9,
       "type" : "Post attributes"
     }, {
       "fromIndex" : 1,
-      "toIndex" : 15,
+      "toIndex" : 14,
       "type" : "Post telemetry"
     }, {
       "fromIndex" : 2,
@@ -45,27 +45,31 @@
       "type" : "Success"
     }, {
       "fromIndex" : 3,
-      "toIndex" : 6,
+      "toIndex" : 5,
       "type" : "Success"
     }, {
       "fromIndex" : 4,
-      "toIndex" : 12,
+      "toIndex" : 11,
+      "type" : "Success"
+    }, {
+      "fromIndex" : 5,
+      "toIndex" : 6,
       "type" : "Success"
     }, {
       "fromIndex" : 6,
       "toIndex" : 7,
       "type" : "Success"
     }, {
-      "fromIndex" : 7,
+      "fromIndex" : 6,
       "toIndex" : 8,
       "type" : "Success"
     }, {
-      "fromIndex" : 7,
-      "toIndex" : 9,
+      "fromIndex" : 11,
+      "toIndex" : 5,
       "type" : "Success"
     }, {
-      "fromIndex" : 12,
-      "toIndex" : 6,
+      "fromIndex" : 13,
+      "toIndex" : 12,
       "type" : "Success"
     }, {
       "fromIndex" : 14,
@@ -73,15 +77,15 @@
       "type" : "Success"
     }, {
       "fromIndex" : 15,
-      "toIndex" : 14,
+      "toIndex" : 11,
       "type" : "Success"
     } ],
     "firstNodeIndex" : 0,
     "nodes" : [ {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 52,
-        "layoutY" : 221
+        "layoutX" : 53,
+        "layoutY" : 60
       },
       "configuration" : {
         "persistAlarmRulesState" : false,
@@ -103,8 +107,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 53,
-        "layoutY" : 298
+        "layoutX" : 390,
+        "layoutY" : 18
       },
       "configuration" : {
         "version" : 0
@@ -129,8 +133,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 341,
-        "layoutY" : 114
+        "layoutX" : 77,
+        "layoutY" : 300
       },
       "configuration" : {
         "scriptLang" : "JS",
@@ -157,8 +161,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 400,
-        "layoutY" : 215
+        "layoutX" : 439,
+        "layoutY" : 299
       },
       "configuration" : {
         "processingSettings" : {
@@ -189,8 +193,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 13,
-        "layoutY" : 13
+        "layoutX" : 64,
+        "layoutY" : 382
       },
       "configuration" : {
         "msgCount" : 0,
@@ -205,7 +209,7 @@
       "createdTime" : 0,
       "debugSettings" : {
         "allEnabled" : false,
-        "allEnabledUntil" : 1770259198507,
+        "allEnabledUntil" : 1771282501433,
         "failuresEnabled" : false
       },
       "externalId" : null,
@@ -213,7 +217,7 @@
         "entityType" : "RULE_NODE",
         "id" : "ca933624-0323-11f1-a7c5-352fa1b71c28"
       },
-      "name" : "offline tick",
+      "name" : "germany offline tick",
       "queueName" : null,
       "ruleChainId" : null,
       "singletonMode" : false,
@@ -221,38 +225,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 429,
-        "layoutY" : 540
-      },
-      "configuration" : {
-        "defaultTTL" : 0,
-        "useServerTs" : false,
-        "processingSettings" : {
-          "type" : "ON_EVERY_MESSAGE"
-        }
-      },
-      "configurationVersion" : 1,
-      "createdTime" : 0,
-      "debugSettings" : {
-        "allEnabled" : false,
-        "allEnabledUntil" : 1770248533567,
-        "failuresEnabled" : false
-      },
-      "externalId" : null,
-      "id" : {
-        "entityType" : "RULE_NODE",
-        "id" : "ca933625-0323-11f1-a7c5-352fa1b71c28"
-      },
-      "name" : "save tele",
-      "queueName" : null,
-      "ruleChainId" : null,
-      "singletonMode" : false,
-      "type" : "org.thingsboard.rule.engine.telemetry.TbMsgTimeseriesNode"
-    }, {
-      "additionalInfo" : {
-        "description" : "",
-        "layoutX" : 668,
-        "layoutY" : 79
+        "layoutX" : 771,
+        "layoutY" : 315
       },
       "configuration" : {
         "tellFailureIfAbsent" : true,
@@ -267,7 +241,7 @@
       "createdTime" : 0,
       "debugSettings" : {
         "allEnabled" : false,
-        "allEnabledUntil" : 1770842825064,
+        "allEnabledUntil" : 1771283336056,
         "failuresEnabled" : false
       },
       "externalId" : null,
@@ -283,8 +257,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 1048,
-        "layoutY" : 53
+        "layoutX" : 1129,
+        "layoutY" : 324
       },
       "configuration" : {
         "scriptLang" : "JS",
@@ -295,7 +269,7 @@
       "createdTime" : 0,
       "debugSettings" : {
         "allEnabled" : false,
-        "allEnabledUntil" : 1770935415103,
+        "allEnabledUntil" : 1771283346303,
         "failuresEnabled" : false
       },
       "externalId" : null,
@@ -311,8 +285,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 882,
-        "layoutY" : 234
+        "layoutX" : 916,
+        "layoutY" : 470
       },
       "configuration" : {
         "processingSettings" : {
@@ -343,8 +317,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 1182,
-        "layoutY" : 238
+        "layoutX" : 1172,
+        "layoutY" : 477
       },
       "configuration" : {
         "defaultTTL" : 0,
@@ -373,8 +347,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 469,
-        "layoutY" : 293
+        "layoutX" : 733,
+        "layoutY" : 132
       },
       "configuration" : {
         "processingSettings" : {
@@ -405,8 +379,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 177,
-        "layoutY" : 551
+        "layoutX" : 974,
+        "layoutY" : 62
       },
       "configuration" : {
         "scope" : "CLIENT_SCOPE",
@@ -430,8 +404,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 312,
-        "layoutY" : 15
+        "layoutX" : 437,
+        "layoutY" : 391
       },
       "configuration" : {
         "relationsQuery" : {
@@ -446,7 +420,11 @@
       },
       "configurationVersion" : 0,
       "createdTime" : 0,
-      "debugSettings" : null,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 1771283327312,
+        "failuresEnabled" : false
+      },
       "externalId" : null,
       "id" : {
         "entityType" : "RULE_NODE",
@@ -460,8 +438,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 1113,
-        "layoutY" : 385
+        "layoutX" : 1202,
+        "layoutY" : 217
       },
       "configuration" : {
         "defaultTTL" : 0,
@@ -490,8 +468,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 753,
-        "layoutY" : 385
+        "layoutX" : 842,
+        "layoutY" : 217
       },
       "configuration" : {
         "scriptLang" : "JS",
@@ -518,8 +496,8 @@
     }, {
       "additionalInfo" : {
         "description" : "",
-        "layoutX" : 448,
-        "layoutY" : 400
+        "layoutX" : 524,
+        "layoutY" : 212
       },
       "configuration" : {
         "tellFailureIfAbsent" : true,
@@ -547,6 +525,38 @@
       "ruleChainId" : null,
       "singletonMode" : false,
       "type" : "org.thingsboard.rule.engine.metadata.TbGetAttributesNode"
+    }, {
+      "additionalInfo" : {
+        "description" : "",
+        "layoutX" : 72,
+        "layoutY" : 448
+      },
+      "configuration" : {
+        "msgCount" : 0,
+        "periodInSeconds" : 60,
+        "scriptLang" : "TBEL",
+        "jsScript" : "var msg = { temp: 42, humidity: 77 };\nvar metadata = { data: 40 };\nvar msgType = \"POST_TELEMETRY_REQUEST\";\n\nreturn { msg: msg, metadata: metadata, msgType: msgType };",
+        "tbelScript" : "var msg = {};\nvar metadata = {};\nvar msgType = \"\";\n\nreturn { msg: msg, metadata: metadata, msgType: msgType };",
+        "originatorId" : "829fcde0-fd99-11f0-b497-d94af11be718",
+        "originatorType" : "ASSET"
+      },
+      "configurationVersion" : 2,
+      "createdTime" : 0,
+      "debugSettings" : {
+        "allEnabled" : false,
+        "allEnabledUntil" : 1771283327312,
+        "failuresEnabled" : false
+      },
+      "externalId" : null,
+      "id" : {
+        "entityType" : "RULE_NODE",
+        "id" : "646850f0-0b85-11f1-8cf2-b5382f6c365c"
+      },
+      "name" : "spain offline tick",
+      "queueName" : null,
+      "ruleChainId" : null,
+      "singletonMode" : false,
+      "type" : "org.thingsboard.rule.engine.debug.TbMsgGeneratorNode"
     } ],
     "ruleChainConnections" : null
   },

@@ -5753,7 +5753,7 @@
               "name" : "",
               "deviceId" : "c710b1a0-d94b-11f0-bcba-9f87c351edd8",
               "dataKeys" : [ {
-                "name" : "gwCommPath",
+                "name" : "systemCommPath",
                 "type" : "attribute",
                 "label" : "System Status",
                 "color" : "#2196f3",
@@ -5797,42 +5797,7 @@
               "iconColor" : {
                 "type" : "constant",
                 "color" : "#000000",
-                "gradient" : {
-                  "advancedMode" : false,
-                  "gradient" : [ "rgba(0, 255, 0, 1)", "rgba(255, 0, 0, 1)" ],
-                  "gradientAdvanced" : [ {
-                    "source" : {
-                      "type" : "constant"
-                    },
-                    "color" : "rgba(0, 255, 0, 1)"
-                  }, {
-                    "source" : {
-                      "type" : "constant"
-                    },
-                    "color" : "rgba(255, 0, 0, 1)"
-                  } ],
-                  "minValue" : 0,
-                  "maxValue" : 100
-                },
-                "rangeList" : {
-                  "advancedMode" : false,
-                  "range" : [ ],
-                  "rangeAdvanced" : [ ]
-                },
-                "colorFunction" : "var temperature = value;\nif (typeof temperature !== undefined) {\n  var percent = (temperature + 60)/120 * 100;\n  return tinycolor.mix('blue', 'red', percent).toHexString();\n}\nreturn 'blue';"
-              },
-              "valueFont" : {
-                "family" : "Roboto",
-                "size" : 72,
-                "sizeUnit" : "px",
-                "style" : "normal",
-                "weight" : "500",
-                "lineHeight" : "100%"
-              },
-              "valueColor" : {
-                "type" : "function",
-                "color" : "rgba(0, 0, 0, 0.87)",
-                "colorFunction" : "// value can be string (\"OK\") or sometimes numeric codes.\r\n// Return a CSS color string (hex is safest).\r\n\r\nvar v = value;\r\n\r\n// Numeric fallback (optional): 1=OK, 2=STALE, 0=OFFLINE\r\nif (typeof v === 'number') {\r\n  if (v === 1) return '#2e7d32';   // green\r\n  if (v === 2) return '#ef6c00';   // orange\r\n  return '#9e9e9e';               // gray\r\n}\r\n\r\nvar s = String(v || '').trim().toUpperCase();\r\n\r\nif (s === 'OK' || s === 'ONLINE') return '#2e7d32';      // green\r\nif (s === 'STALE') return '#ef6c00';                     // orange\r\nif (s === 'OFFLINE') return '#9e9e9e';                   // gray\r\n\r\n// If you have other labels, map them here:\r\nif (s === 'UNKNOWN' || s === 'N/A' || s === '') return '#9e9e9e';\r\n\r\nreturn '#9e9e9e';\r\n\r\n",
+                "colorFunction" : "var temperature = value;\nif (typeof temperature !== undefined) {\n  var percent = (temperature + 60)/120 * 100;\n  return tinycolor.mix('blue', 'red', percent).toHexString();\n}\nreturn 'blue';",
                 "gradient" : {
                   "advancedMode" : false,
                   "gradient" : [ "rgba(0, 255, 0, 1)", "rgba(255, 0, 0, 1)" ],
@@ -5855,6 +5820,41 @@
                   "range" : [ ],
                   "rangeAdvanced" : [ ]
                 }
+              },
+              "valueFont" : {
+                "family" : "Roboto",
+                "size" : 72,
+                "sizeUnit" : "px",
+                "style" : "normal",
+                "weight" : "500",
+                "lineHeight" : "100%"
+              },
+              "valueColor" : {
+                "type" : "function",
+                "color" : "rgba(0, 0, 0, 0.87)",
+                "gradient" : {
+                  "advancedMode" : false,
+                  "gradient" : [ "rgba(0, 255, 0, 1)", "rgba(255, 0, 0, 1)" ],
+                  "gradientAdvanced" : [ {
+                    "source" : {
+                      "type" : "constant"
+                    },
+                    "color" : "rgba(0, 255, 0, 1)"
+                  }, {
+                    "source" : {
+                      "type" : "constant"
+                    },
+                    "color" : "rgba(255, 0, 0, 1)"
+                  } ],
+                  "minValue" : 0,
+                  "maxValue" : 100
+                },
+                "rangeList" : {
+                  "advancedMode" : false,
+                  "range" : [ ],
+                  "rangeAdvanced" : [ ]
+                },
+                "colorFunction" : "// value can be string (\"OK\") or sometimes numeric codes.\r\n// Return a CSS color string (hex is safest).\r\n\r\nvar v = value;\r\n\r\n// Numeric fallback (optional): 1=OK, 2=STALE, 0=OFFLINE\r\nif (typeof v === 'string') {\r\n  if (v === \"ONLINE\") return '#2e7d32';   // green\r\n  if (v === \"OFFLINE\" || v === \"UNKNOWN\") return '#808080'; // grey\r\n  if (v === \"STALE\") return '#ef6c00';   // orange\r\n  return '#FF0000';               // red\r\n}\r\n\r\nvar s = String(v || '').trim().toUpperCase();\r\n\r\nif (s === 'OK' || s === 'ONLINE') return '#2e7d32';      // green\r\nif (s === 'STALE') return '#ef6c00';                     // orange\r\nif (s === 'OFFLINE') return '#9e9e9e';                   // gray\r\n\r\n// If you have other labels, map them here:\r\nif (s === 'UNKNOWN' || s === 'N/A' || s === '') return '#9e9e9e';\r\n\r\nreturn '#9e9e9e';\r\n\r\n"
               },
               "showDate" : false,
               "dateFormat" : {
@@ -5898,7 +5898,29 @@
             "decimals" : 0,
             "showLegend" : false,
             "widgetStyle" : { },
-            "actions" : { },
+            "actions" : {
+              "headerButton" : [ {
+                "name" : "Status Detail",
+                "buttonType" : "icon",
+                "icon" : "more_horiz",
+                "buttonColor" : "rgba(0, 0, 0, 0.87)",
+                "customButtonStyle" : { },
+                "useShowWidgetActionFunction" : null,
+                "showWidgetActionFunction" : "return true;",
+                "type" : "openDashboardState",
+                "targetDashboardStateId" : "status_detail",
+                "setEntityId" : true,
+                "stateEntityParamName" : null,
+                "openRightLayout" : false,
+                "dialogTitle" : "",
+                "dialogHideDashboardToolbar" : true,
+                "dialogWidth" : null,
+                "dialogHeight" : null,
+                "openInSeparateDialog" : true,
+                "openInPopover" : false,
+                "id" : "bc97924a-670c-60b9-52f0-ff15e8f6584e"
+              } ]
+            },
             "configMode" : "advanced",
             "margin" : "0px",
             "borderRadius" : "12px",
@@ -6235,35 +6257,15 @@
               "latestDataKeys" : [ ]
             } ],
             "timewindow" : {
-              "hideAggregation" : false,
-              "hideAggInterval" : false,
-              "hideTimezone" : false,
               "selectedTab" : 0,
               "realtime" : {
                 "realtimeType" : 0,
-                "interval" : 1000,
-                "timewindowMs" : 604800000,
-                "quickInterval" : "CURRENT_DAY",
-                "hideInterval" : false,
-                "hideLastInterval" : false,
-                "hideQuickInterval" : false
-              },
-              "history" : {
-                "historyType" : 0,
-                "interval" : 1000,
-                "timewindowMs" : 604800000,
-                "fixedTimewindow" : null,
-                "quickInterval" : "CURRENT_DAY",
-                "hideInterval" : false,
-                "hideLastInterval" : false,
-                "hideFixedInterval" : false,
-                "hideQuickInterval" : false
+                "timewindowMs" : 604800000
               },
               "aggregation" : {
                 "type" : "NONE",
                 "limit" : 200
-              },
-              "timezone" : null
+              }
             },
             "showTitle" : true,
             "backgroundColor" : "rgb(255, 255, 255)",
@@ -8596,7 +8598,7 @@
             "color" : "rgba(0, 0, 0, 0.87)",
             "padding" : "0px",
             "settings" : {
-              "cardHtml" : "<div class=\"psu-card\">\r\n  <div class=\"psu-title\">PSU summary</div>\r\n  \r\n  <div class=\"psu-table\">\r\n    <div class=\"psu-head\">PSU</div>\r\n    <div class=\"psu-head\">Reachability</div>\r\n    <div class=\"psu-head\">Offline/Unreachable for</div>\r\n    <div class=\"psu-head\">Return Error</div>\r\n\r\n    <div class=\"psu-cell psu-name\">PSU1</div>\r\n    <div class=\"psu-cell\">${psu1CommPath}</div>\r\n    <div class=\"psu-cell\">${psu1OfflineSinceTs}</div>\r\n    <div class=\"psu-cell\">${PSU1returnError:0}</div>\r\n\r\n    <div class=\"psu-cell psu-name\">PSU2</div>\r\n    <div class=\"psu-cell\">${psu2CommPath}</div>\r\n    <div class=\"psu-cell\">${psu2OfflineSinceTs}</div>\r\n    <div class=\"psu-cell\">${PSU2returnError:0}</div>\r\n  </div>\r\n  <hr>\r\n  <div class =\"psu-head\">ONLINE = reachable; errors/timeouts show comms/PSU faults even if reachable</div>\r\n</div>\r\n\r\n",
+              "cardHtml" : "<div class=\"psu-card\">\r\n  <div class=\"psu-title\">PSU Summary</div>\r\n  \r\n  <div class=\"psu-table\">\r\n    <div class=\"psu-head\">PSU</div>\r\n    <div class=\"psu-head\">Reachability</div>\r\n    <div class=\"psu-head\">Offline/Unreachable for</div>\r\n    <div class=\"psu-head\">Return Error</div>\r\n\r\n    <div class=\"psu-cell psu-name\">PSU1</div>\r\n    <div class=\"psu-cell\">${psu1CommPath}</div>\r\n    <div class=\"psu-cell\">${psu1OfflineSinceTs}</div>\r\n    <div class=\"psu-cell\">${PSU1returnError:0}</div>\r\n\r\n    <div class=\"psu-cell psu-name\">PSU2</div>\r\n    <div class=\"psu-cell\">${psu2CommPath}</div>\r\n    <div class=\"psu-cell\">${psu2OfflineSinceTs}</div>\r\n    <div class=\"psu-cell\">${PSU2returnError:0}</div>\r\n  </div>\r\n  <hr>\r\n  <div class =\"psu-head\">ONLINE = reachable; errors/timeouts show comms/PSU faults even if reachable</div>\r\n</div>\r\n\r\n",
               "cardCss" : ".psu-card{\r\n  font-family: Roboto, \"Helvetica Neue\", Arial, sans-serif;\r\n  background:#fff;\r\n  border:1px solid rgba(0,0,0,.08);\r\n  border-radius:12px;\r\n  box-shadow:0 2px 10px rgba(0,0,0,.08);\r\n  padding:16px 16px 50px;\r\n}\r\n\r\n.psu-title{\r\n  font-size:16px;\r\n  font-weight:500;\r\n  color:#2b2b2b;\r\n  margin-bottom:10px;\r\n}\r\n\r\n.psu-table{\r\n  display:grid;\r\n  grid-template-columns: 70px 1fr 1fr 2fr;\r\n  gap:20px 10px;\r\n  align-items:center;\r\n}\r\n\r\n.psu-head{\r\n  font-size:14px;\r\n  color:#0000008a;\r\n  \r\n  font-weight:500;\r\n  /*text-transform:uppercase; */\r\n  letter-spacing:.4px;\r\n}\r\n\r\n.psu-cell{\r\n  font-size:13px;\r\n  color:#111;\r\n  padding:6px 8px;\r\n  border-radius:8px;\r\n  background:rgba(0,0,0,.03);\r\n}\r\n\r\n.psu-name{\r\n  font-weight:600;\r\n  background:transparent;\r\n  padding-left:0;\r\n}\r\n\r\n/* Status LED styles (works with post-processing markup) */\r\n.s{\r\n  display:inline-flex;\r\n  align-items:center;\r\n  gap:8px;\r\n  font-weight:700;\r\n  font-size:12px;\r\n  letter-spacing:.3px;\r\n}\r\n\r\n.dot{\r\n  width:10px;\r\n  height:10px;\r\n  border-radius:50%;\r\n  display:inline-block;\r\n}\r\n\r\n.online .dot{\r\n  background:#19c37d;\r\n  box-shadow:0 0 0 3px rgba(25,195,125,.18), 0 0 10px rgba(25,195,125,.55);\r\n}\r\n.offline .dot{\r\n  background:#ff3b30;\r\n  box-shadow:0 0 0 3px rgba(255,59,48,.18), 0 0 10px rgba(255,59,48,.55);\r\n}\r\n.unreachable .dot{\r\n  background:#ff9500;\r\n  box-shadow:0 0 0 3px rgba(255,149,0,.18), 0 0 10px rgba(255,149,0,.55);\r\n}\r\n.unknown .dot{\r\n  background:#8e8e93;\r\n  box-shadow:0 0 0 3px rgba(142,142,147,.18), 0 0 10px rgba(142,142,147,.35);\r\n}\r\n\r\n@media (max-width: 520px){\r\n  .psu-table{ grid-template-columns: 60px 1fr; }\r\n  .psu-head:nth-child(3),\r\n  .psu-head:nth-child(4){ display:none; }\r\n}\r\n\r\n/* Keep cells neat */\r\n.psu-cell{\r\n  overflow:hidden;\r\n  text-overflow: ellipsis;\r\n}\r\n\r\n/* Let only the Return err column wrap (4th column) */\r\n.psu-table .psu-cell:nth-child(4),\r\n.psu-table .psu-cell:nth-child(8) {\r\n  white-space: normal;\r\n  overflow: visible;\r\n  text-overflow: unset;\r\n  line-height: 1.25;\r\n}\r\n"
             },
             "title" : "HTML Value Card",
@@ -10313,69 +10315,6 @@
           "col" : 0,
           "id" : "ae9dcb31-078d-00b2-a308-5c974719f7d1"
         },
-        "79c306cb-1cc4-bdea-ae84-8a522c024dcb" : {
-          "typeFullFqn" : "system.control_widgets.rpc_debug_terminal",
-          "type" : "rpc",
-          "sizeX" : 9.5,
-          "sizeY" : 5.5,
-          "config" : {
-            "targetDeviceAliases" : [ ],
-            "showTitle" : true,
-            "backgroundColor" : "#010101",
-            "color" : "rgba(255, 254, 254, 0.87)",
-            "padding" : "0px",
-            "settings" : {
-              "parseGpioStatusFunction" : "return body[pin] === true;",
-              "gpioStatusChangeRequest" : {
-                "method" : "setGpioStatus",
-                "paramsBody" : "{\n   \"pin\": \"{$pin}\",\n   \"enabled\": \"{$enabled}\"\n}"
-              },
-              "requestTimeout" : 500,
-              "switchPanelBackgroundColor" : "#b71c1c",
-              "gpioStatusRequest" : {
-                "method" : "getGpioStatus",
-                "paramsBody" : "{}"
-              },
-              "gpioList" : [ {
-                "pin" : 1,
-                "label" : "GPIO 1",
-                "row" : 0,
-                "col" : 0,
-                "_uniqueKey" : 0
-              }, {
-                "pin" : 2,
-                "label" : "GPIO 2",
-                "row" : 0,
-                "col" : 1,
-                "_uniqueKey" : 1
-              }, {
-                "pin" : 3,
-                "label" : "GPIO 3",
-                "row" : 1,
-                "col" : 0,
-                "_uniqueKey" : 2
-              } ]
-            },
-            "title" : "RPC debug terminal",
-            "dropShadow" : true,
-            "enableFullscreen" : true,
-            "widgetStyle" : { },
-            "titleStyle" : {
-              "fontSize" : "16px",
-              "fontWeight" : 400
-            },
-            "showLegend" : false,
-            "actions" : { },
-            "datasources" : [ ],
-            "targetDevice" : {
-              "type" : "entity",
-              "entityAliasId" : "a4cfec0a-190d-df5a-91c5-8922d34dc063"
-            }
-          },
-          "row" : 0,
-          "col" : 0,
-          "id" : "79c306cb-1cc4-bdea-ae84-8a522c024dcb"
-        },
         "6f2448c8-8d84-b35f-f2f5-614945ee151c" : {
           "typeFullFqn" : "system.command_button",
           "type" : "rpc",
@@ -10405,8 +10344,8 @@
                 "valueToData" : {
                   "type" : "CONSTANT",
                   "constantValue" : {
-                    "sensorId" : 18,
-                    "sensorType" : 2,
+                    "sensorId" : 22,
+                    "sensorType" : 3,
                     "dataType" : 0
                   },
                   "valueToDataFunction" : "/* Return RPC parameters or attribute/time-series value */\nreturn true;"
@@ -10434,15 +10373,15 @@
               },
               "appearance" : {
                 "type" : "outlined",
-                "autoScale" : true,
                 "showLabel" : true,
-                "label" : "Send",
+                "label" : "POLL SENSOR",
                 "showIcon" : true,
                 "icon" : "arrow_outward",
                 "iconSize" : 24,
                 "iconSizeUnit" : "px",
-                "mainColor" : "var(--tb-primary-500)",
+                "mainColor" : "#000000",
                 "backgroundColor" : "#FFFFFF",
+                "autoScale" : true,
                 "customStyle" : {
                   "enabled" : null,
                   "hovered" : null,
@@ -10477,7 +10416,7 @@
             "titleIcon" : "",
             "iconColor" : "rgba(0, 0, 0, 0.87)",
             "iconSize" : "14px",
-            "configMode" : "advanced",
+            "configMode" : "basic",
             "borderRadius" : "12px",
             "datasources" : [ ],
             "targetDevice" : {
@@ -10804,6 +10743,311 @@
           "row" : 0,
           "col" : 0,
           "id" : "2395e86b-523e-877e-39b0-9cc4c839c374"
+        },
+        "367f7fcb-e1c2-8f15-8a65-8a653249507f" : {
+          "typeFullFqn" : "system.cards.html_value_card",
+          "type" : "latest",
+          "sizeX" : 7.5,
+          "sizeY" : 3,
+          "config" : {
+            "datasources" : [ {
+              "type" : "entity",
+              "name" : "",
+              "entityAliasId" : "a4cfec0a-190d-df5a-91c5-8922d34dc063",
+              "dataKeys" : [ {
+                "name" : "gwCommPath",
+                "type" : "attribute",
+                "label" : "gwCommPath",
+                "color" : "#2196f3",
+                "settings" : { }
+              }, {
+                "name" : "psu1CommPath",
+                "type" : "attribute",
+                "label" : "psu1CommPath",
+                "color" : "#4caf50",
+                "settings" : { }
+              }, {
+                "name" : "psu2CommPath",
+                "type" : "attribute",
+                "label" : "psu2CommPath",
+                "color" : "#f44336",
+                "settings" : { }
+              }, {
+                "name" : "systemCommPath",
+                "type" : "attribute",
+                "label" : "systemCommPath",
+                "color" : "#ffc107",
+                "settings" : { }
+              } ],
+              "alarmFilterConfig" : {
+                "statusList" : [ "ACTIVE" ]
+              }
+            } ],
+            "showTitle" : false,
+            "backgroundColor" : "#fff",
+            "color" : "rgba(0, 0, 0, 0.87)",
+            "padding" : "0px",
+            "settings" : {
+              "cardHtml" : "<div class=\"status-ref\">\r\n    <div class=\"sr-title\">Current status snapshot</div>\r\n\r\n    <div class=\"sr-snapshot1\">\r\n        <div class=\"snap-item snap-system\">\r\n            <div class=\"snap-label\">System</div>\r\n            <div class=\"snap-value\">\r\n                <span class=\"badge b-deg\">${systemCommPath}</span>\r\n            </div>\r\n            <div class=\"snap-sub\">Roll-up of Gateway + PSU1 + PSU2</div>\r\n        </div>\r\n        <div class=\"snap-item\">\r\n            <div class=\"snap-label\">Gateway</div>\r\n            <div class=\"snap-value\">\r\n                <span class=\"badge b-online\">${gwCommPath}</span>\r\n            </div>\r\n            <div class=\"snap-sub\">Connectivity to cloud</div>\r\n        </div>\r\n    </div>\r\n    <br>\r\n    <div class=\"sr-snapshot\">\r\n        \r\n        <div class=\"snap-item\">\r\n            <div class=\"snap-label\">PSU1</div>\r\n            <div class=\"snap-value\">\r\n                <span class=\"badge b-offline\">${psu1CommPath}</span>\r\n            </div>\r\n            <div class=\"snap-sub\">Heartbeat status</div>\r\n        </div>\r\n\r\n        <div class=\"snap-item\">\r\n            <div class=\"snap-label\">PSU2</div>\r\n            <div class=\"snap-value\">\r\n                <span class=\"badge b-offline\">${psu2CommPath}</span>\r\n            </div>\r\n            <div class=\"snap-sub\">Heartbeat status</div>\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"sr-divider\"></div>\r\n    <div class=\"sr-title\">System status meaning</div>\r\n\r\n    <table class=\"sr-table\">\r\n        <thead>\r\n            <tr>\r\n                <th class=\"c-status\">System status</th>\r\n                <th class=\"c-meaning\">What it means</th>\r\n                <th class=\"c-next\">What to check next</th>\r\n            </tr>\r\n        </thead>\r\n        <tbody>\r\n            <tr>\r\n                <td class=\"sr-status\" data-label=\"System status\"><span class=\"badge b-online\">ONLINE</span></td>\r\n                <td class=\"sr-text\" data-label=\"What it means\">Gateway ONLINE and both PSUs ONLINE.</td>\r\n                <td class=\"sr-text\" data-label=\"What to check next\">No action required.</td>\r\n            </tr>\r\n\r\n            <tr>\r\n                <td class=\"sr-status\" data-label=\"System status\"><span class=\"badge b-stale\">STALE</span></td>\r\n                <td class=\"sr-text\" data-label=\"What it means\">At least one PSU heartbeat is late.</td>\r\n                <td class=\"sr-text\" data-label=\"What to check next\">Check comms/power; may become OFFLINE.</td>\r\n            </tr>\r\n\r\n            <tr>\r\n                <td class=\"sr-status\" data-label=\"System status\"><span class=\"badge b-deg\">DEGRADED</span></td>\r\n                <td class=\"sr-text\" data-label=\"What it means\">Gateway ONLINE, but a PSU is OFFLINE/UNREACHABLE.</td>\r\n                <td class=\"sr-text\" data-label=\"What to check next\">Check PSU power/wiring + RS232 path.</td>\r\n            </tr>\r\n\r\n            <tr>\r\n                <td class=\"sr-status\" data-label=\"System status\"><span class=\"badge b-offline\">OFFLINE</span></td>\r\n                <td class=\"sr-text\" data-label=\"What it means\">Gateway not ONLINE; PSU state may be frozen.</td>\r\n                <td class=\"sr-text\" data-label=\"What to check next\">Restore gateway power/network first.</td>\r\n            </tr>\r\n\r\n            <tr>\r\n                <td class=\"sr-status\" data-label=\"System status\"><span class=\"badge b-unk\">UNKNOWN</span></td>\r\n                <td class=\"sr-text\" data-label=\"What it means\">Missing/invalid last-seen data for a PSU.</td>\r\n                <td class=\"sr-text\" data-label=\"What to check next\">Verify keys, timestamps, expected PSUs.</td>\r\n            </tr>\r\n        </tbody>\r\n    </table>\r\n\r\n    <div class=\"sr-note\">\r\n        Note: ONLINE requires Gateway ONLINE and both PSUs ONLINE. Otherwise the system shows the worst active state.\r\n    </div>\r\n</div>",
+              "cardCss" : ".status-ref {\r\n    width: 100%;\r\n    box-sizing: border-box;\r\n    font-family: inherit;\r\n    padding: 20px 20px 8px 20px;\r\n}\r\n\r\n.sr-title {\r\n    font-size: 18px;\r\n    font-weight: 700;\r\n    margin: 0 0 10px 0;\r\n}\r\n\r\n.sr-section-title {\r\n    font-size: 14px;\r\n    font-weight: 700;\r\n    margin: 10px 0 8px 0;\r\n    color: #111;\r\n}\r\n\r\n.sr-snapshot1 {\r\n    display: grid;\r\n    grid-template-columns: repeat(2, minmax(0, 1fr));\r\n    gap: 10px;\r\n}\r\n\r\n.sr-snapshot {\r\n    display: grid;\r\n    grid-template-columns: repeat(2, minmax(0, 1fr));\r\n    gap: 10px;\r\n}\r\n\r\n.snap-item {\r\n    border: 1px solid #e6e6e6;\r\n    border-radius: 12px;\r\n    padding: 12px;\r\n    background: #fff;\r\n}\r\n\r\n.snap-label {\r\n    font-size: 12px;\r\n    font-weight: 700;\r\n    color: #555;\r\n    letter-spacing: 0.2px;\r\n    margin-bottom: 8px;\r\n}\r\n\r\n.snap-value {\r\n    margin-bottom: 8px;\r\n}\r\n\r\n.snap-sub {\r\n    font-size: 12px;\r\n    color: #666;\r\n}\r\n\r\n.sr-divider {\r\n    margin: 14px 0;\r\n    height: 1px;\r\n    background: #e6e6e6;\r\n    width: 100%;\r\n}\r\n\r\n.sr-table {\r\n    width: 100%;\r\n    margin-bottom: 0;\r\n    border-collapse: collapse;\r\n    table-layout: fixed;\r\n    border: 1px solid #e6e6e6;\r\n    border-radius: 10px;\r\n    overflow: hidden;\r\n}\r\n\r\n.sr-table thead th {\r\n    text-align: left;\r\n    font-weight: 700;\r\n    font-size: 13px;\r\n    background: #f6f7f9;\r\n    color: #111;\r\n    padding: 12px;\r\n    border-bottom: 1px solid #e6e6e6;\r\n}\r\n\r\n.sr-table tbody td {\r\n    vertical-align: top;\r\n    padding: 12px;\r\n    border-bottom: 1px solid #efefef;\r\n    font-size: 13px;\r\n    color: #222;\r\n}\r\n\r\n.sr-table tbody tr:last-child td {\r\n    border-bottom: none;\r\n}\r\n\r\n.c-status {\r\n    width: 25%;\r\n}\r\n\r\n.c-meaning {\r\n    width: 45%;\r\n}\r\n\r\n.c-next {\r\n    width: 30%;\r\n}\r\n\r\n.sr-status {\r\n    white-space: nowrap;\r\n}\r\n\r\n.badge {\r\n    display: inline-block;\r\n    padding: 6px 10px;\r\n    border-radius: 999px;\r\n    font-weight: 800;\r\n    font-size: 12px;\r\n    letter-spacing: 0.3px;\r\n    border: 1px solid rgba(0, 0, 0, 0.08);\r\n}\r\n\r\n/* Base colors */\r\n.b-online {\r\n    background: #e9f8ee;\r\n    color: #1a6e2b;\r\n}\r\n\r\n.b-stale {\r\n    background: #fff6df;\r\n    color: #7a4a00;\r\n}\r\n\r\n.b-deg {\r\n    background: #ffe7e7;\r\n    color: #8f1d1d;\r\n}\r\n\r\n.b-offline {\r\n    background: #ffe7e7;\r\n    color: #8f1d1d;\r\n}\r\n\r\n.b-unreach {\r\n    background: #f0f1f3;\r\n    color: #3b3f45;\r\n}\r\n\r\n.b-unk {\r\n    background: #f0f1f3;\r\n    color: #3b3f45;\r\n}\r\n\r\n.sr-note {\r\n    margin-top: 10px;\r\n    margin-bottom: 0;\r\n    font-size: 12px;\r\n    color: #666;\r\n}\r\n\r\n/* Responsive */\r\n@media (max-width: 900px) {\r\n    .sr-snapshot {\r\n        grid-template-columns: repeat(2, minmax(0, 1fr));\r\n    }\r\n}"
+            },
+            "title" : "HTML Value Card",
+            "dropShadow" : false,
+            "enableFullscreen" : false,
+            "widgetStyle" : { },
+            "titleStyle" : {
+              "fontSize" : "16px",
+              "fontWeight" : 400
+            },
+            "showLegend" : false,
+            "actions" : { },
+            "enableDataExport" : false,
+            "borderRadius" : "12px",
+            "widgetCss" : "",
+            "pageSize" : 1024,
+            "noDataDisplayMessage" : ""
+          },
+          "row" : 0,
+          "col" : 0,
+          "id" : "367f7fcb-e1c2-8f15-8a65-8a653249507f"
+        },
+        "b2ec675f-8a79-3304-ae36-3468467c0fae" : {
+          "typeFullFqn" : "system.action_button",
+          "type" : "latest",
+          "sizeX" : 3,
+          "sizeY" : 1,
+          "config" : {
+            "datasources" : [ {
+              "type" : "device",
+              "deviceId" : "c710b1a0-d94b-11f0-bcba-9f87c351edd8",
+              "dataKeys" : [ ],
+              "alarmFilterConfig" : {
+                "statusList" : [ "ACTIVE" ]
+              }
+            } ],
+            "showTitle" : false,
+            "backgroundColor" : "#FFFFFF01",
+            "color" : "rgba(0, 0, 0, 0.87)",
+            "padding" : "0px",
+            "settings" : {
+              "activatedState" : {
+                "action" : "DO_NOTHING",
+                "defaultValue" : false,
+                "getAttribute" : {
+                  "key" : "state",
+                  "scope" : null
+                },
+                "getTimeSeries" : {
+                  "key" : "state"
+                },
+                "getAlarmStatus" : {
+                  "severityList" : null,
+                  "typeList" : null
+                },
+                "dataToValue" : {
+                  "type" : "NONE",
+                  "compareToValue" : true,
+                  "dataToValueFunction" : "/* Should return boolean value */\nreturn data;"
+                }
+              },
+              "disabledState" : {
+                "action" : "DO_NOTHING",
+                "defaultValue" : false,
+                "getAttribute" : {
+                  "key" : "state",
+                  "scope" : null
+                },
+                "getTimeSeries" : {
+                  "key" : "state"
+                },
+                "getAlarmStatus" : {
+                  "severityList" : null,
+                  "typeList" : null
+                },
+                "dataToValue" : {
+                  "type" : "NONE",
+                  "compareToValue" : true,
+                  "dataToValueFunction" : "/* Should return boolean value */\nreturn data;"
+                }
+              },
+              "appearance" : {
+                "type" : "outlined",
+                "showLabel" : true,
+                "label" : "PSU & STUD",
+                "showIcon" : true,
+                "icon" : "bolt",
+                "iconSize" : 24,
+                "iconSizeUnit" : "px",
+                "mainColor" : "#000000",
+                "backgroundColor" : "#FFFFFF",
+                "autoScale" : true,
+                "customStyle" : {
+                  "enabled" : null,
+                  "hovered" : null,
+                  "pressed" : null,
+                  "activated" : null,
+                  "disabled" : null
+                }
+              }
+            },
+            "title" : "Action button",
+            "showTitleIcon" : false,
+            "iconColor" : "rgba(0, 0, 0, 0.87)",
+            "iconSize" : "24px",
+            "titleTooltip" : "",
+            "dropShadow" : false,
+            "enableFullscreen" : false,
+            "enableDataExport" : false,
+            "widgetStyle" : { },
+            "titleStyle" : {
+              "fontSize" : "16px",
+              "fontWeight" : 400
+            },
+            "showLegend" : false,
+            "widgetCss" : "",
+            "pageSize" : 1024,
+            "noDataDisplayMessage" : "",
+            "borderRadius" : "12px",
+            "configMode" : "advanced",
+            "actions" : {
+              "click" : [ {
+                "name" : "PSU Monitoring",
+                "icon" : "mdi:wrench-clock",
+                "useShowWidgetActionFunction" : null,
+                "showWidgetActionFunction" : "return true;",
+                "type" : "updateDashboardState",
+                "targetDashboardStateId" : "psu_monitoring",
+                "setEntityId" : true,
+                "stateEntityParamName" : null,
+                "openRightLayout" : false,
+                "openInSeparateDialog" : false,
+                "openInPopover" : false,
+                "id" : "039da58f-219f-6725-3ec3-83eee08250e0"
+              } ]
+            }
+          },
+          "row" : 0,
+          "col" : 0,
+          "id" : "b2ec675f-8a79-3304-ae36-3468467c0fae"
+        },
+        "9749a968-e871-bbe9-35a5-14a7c097af1d" : {
+          "typeFullFqn" : "system.action_button",
+          "type" : "latest",
+          "sizeX" : 3,
+          "sizeY" : 1,
+          "config" : {
+            "datasources" : [ {
+              "type" : "device",
+              "deviceId" : "c710b1a0-d94b-11f0-bcba-9f87c351edd8",
+              "dataKeys" : [ ],
+              "alarmFilterConfig" : {
+                "statusList" : [ "ACTIVE" ]
+              }
+            } ],
+            "showTitle" : false,
+            "backgroundColor" : "#FFFFFF01",
+            "color" : "rgba(0, 0, 0, 0.87)",
+            "padding" : "0px",
+            "settings" : {
+              "activatedState" : {
+                "action" : "DO_NOTHING",
+                "defaultValue" : false,
+                "getAttribute" : {
+                  "key" : "state",
+                  "scope" : null
+                },
+                "getTimeSeries" : {
+                  "key" : "state"
+                },
+                "getAlarmStatus" : {
+                  "severityList" : null,
+                  "typeList" : null
+                },
+                "dataToValue" : {
+                  "type" : "NONE",
+                  "compareToValue" : true,
+                  "dataToValueFunction" : "/* Should return boolean value */\nreturn data;"
+                }
+              },
+              "disabledState" : {
+                "action" : "DO_NOTHING",
+                "defaultValue" : false,
+                "getAttribute" : {
+                  "key" : "state",
+                  "scope" : null
+                },
+                "getTimeSeries" : {
+                  "key" : "state"
+                },
+                "getAlarmStatus" : {
+                  "severityList" : null,
+                  "typeList" : null
+                },
+                "dataToValue" : {
+                  "type" : "NONE",
+                  "compareToValue" : true,
+                  "dataToValueFunction" : "/* Should return boolean value */\nreturn data;"
+                }
+              },
+              "appearance" : {
+                "type" : "outlined",
+                "showLabel" : true,
+                "label" : "Gateway",
+                "showIcon" : true,
+                "icon" : "cloud",
+                "iconSize" : 24,
+                "iconSizeUnit" : "px",
+                "mainColor" : "#000000",
+                "backgroundColor" : "#FFFFFF",
+                "autoScale" : true,
+                "customStyle" : {
+                  "enabled" : null,
+                  "hovered" : null,
+                  "pressed" : null,
+                  "activated" : null,
+                  "disabled" : null
+                }
+              }
+            },
+            "title" : "Action button",
+            "showTitleIcon" : false,
+            "iconColor" : "rgba(0, 0, 0, 0.87)",
+            "iconSize" : "24px",
+            "titleTooltip" : "",
+            "dropShadow" : false,
+            "enableFullscreen" : false,
+            "enableDataExport" : false,
+            "widgetStyle" : { },
+            "titleStyle" : {
+              "fontSize" : "16px",
+              "fontWeight" : 400
+            },
+            "showLegend" : false,
+            "widgetCss" : "",
+            "pageSize" : 1024,
+            "noDataDisplayMessage" : "",
+            "borderRadius" : "12px",
+            "configMode" : "advanced",
+            "actions" : {
+              "click" : [ {
+                "name" : "Gateway Monitoring",
+                "icon" : "more_horiz",
+                "useShowWidgetActionFunction" : null,
+                "showWidgetActionFunction" : "return true;",
+                "type" : "updateDashboardState",
+                "targetDashboardStateId" : "gateway_monitor",
+                "setEntityId" : true,
+                "stateEntityParamName" : null,
+                "openRightLayout" : false,
+                "openInSeparateDialog" : false,
+                "openInPopover" : false,
+                "id" : "039da58f-219f-6725-3ec3-83eee08250e0"
+              } ]
+            }
+          },
+          "row" : 0,
+          "col" : 0,
+          "id" : "9749a968-e871-bbe9-35a5-14a7c097af1d"
         }
       },
       "states" : {
@@ -11417,16 +11661,16 @@
                   "col" : 15
                 },
                 "c9c520bf-5a2a-73c8-f010-0607dae943ee" : {
-                  "sizeX" : 4,
+                  "sizeX" : 3,
                   "sizeY" : 1,
                   "row" : 10,
-                  "col" : 17
+                  "col" : 18
                 },
                 "3e663a5e-2445-2086-42c8-578b9fe97439" : {
-                  "sizeX" : 4,
+                  "sizeX" : 3,
                   "sizeY" : 1,
                   "row" : 10,
-                  "col" : 13
+                  "col" : 15
                 },
                 "fc1e0afc-9ca9-6f63-a7d2-d3c8b4a88726" : {
                   "sizeX" : 9,
@@ -11454,16 +11698,10 @@
                   "row" : 7,
                   "col" : 12
                 },
-                "79c306cb-1cc4-bdea-ae84-8a522c024dcb" : {
-                  "sizeX" : 9,
-                  "sizeY" : 5,
-                  "row" : 11,
-                  "col" : 3
-                },
                 "6f2448c8-8d84-b35f-f2f5-614945ee151c" : {
                   "sizeX" : 3,
                   "sizeY" : 1,
-                  "row" : 15,
+                  "row" : 10,
                   "col" : 12
                 }
               },
@@ -11774,6 +12012,82 @@
                 "margin" : 10,
                 "outerMargin" : true,
                 "backgroundSizeMode" : "100%"
+              }
+            }
+          }
+        },
+        "status_detail" : {
+          "name" : "Status Detail",
+          "root" : false,
+          "layouts" : {
+            "main" : {
+              "widgets" : {
+                "367f7fcb-e1c2-8f15-8a65-8a653249507f" : {
+                  "sizeX" : 24,
+                  "sizeY" : 21,
+                  "row" : 2,
+                  "col" : 0
+                },
+                "b2ec675f-8a79-3304-ae36-3468467c0fae" : {
+                  "sizeX" : 12,
+                  "sizeY" : 2,
+                  "row" : 0,
+                  "col" : 12
+                },
+                "9749a968-e871-bbe9-35a5-14a7c097af1d" : {
+                  "sizeX" : 12,
+                  "sizeY" : 2,
+                  "resizable" : true,
+                  "row" : 0,
+                  "col" : 0
+                }
+              },
+              "gridSettings" : {
+                "layoutType" : "default",
+                "backgroundColor" : "#eeeeee",
+                "columns" : 24,
+                "margin" : 10,
+                "outerMargin" : true,
+                "backgroundSizeMode" : "100%"
+              },
+              "breakpoints" : {
+                "xs" : {
+                  "gridSettings" : {
+                    "layoutType" : "default",
+                    "backgroundColor" : "#eeeeee",
+                    "columns" : 12,
+                    "margin" : 10,
+                    "outerMargin" : true,
+                    "backgroundSizeMode" : "100%",
+                    "viewFormat" : "grid",
+                    "rowHeight" : 70,
+                    "autoFillHeight" : false,
+                    "minColumns" : 12,
+                    "mobileAutoFillHeight" : false,
+                    "mobileRowHeight" : 70
+                  },
+                  "widgets" : {
+                    "367f7fcb-e1c2-8f15-8a65-8a653249507f" : {
+                      "sizeX" : 12,
+                      "sizeY" : 27,
+                      "row" : 2,
+                      "col" : 0
+                    },
+                    "b2ec675f-8a79-3304-ae36-3468467c0fae" : {
+                      "sizeX" : 6,
+                      "sizeY" : 2,
+                      "row" : 0,
+                      "col" : 6
+                    },
+                    "9749a968-e871-bbe9-35a5-14a7c097af1d" : {
+                      "sizeX" : 6,
+                      "sizeY" : 2,
+                      "resizable" : true,
+                      "row" : 0,
+                      "col" : 0
+                    }
+                  }
+                }
               }
             }
           }

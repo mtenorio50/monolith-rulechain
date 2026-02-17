@@ -8,45 +8,6 @@
     "configuration" : {
       "description" : "",
       "widgets" : {
-        "22ad52b4-10fa-9264-9117-46b261f4604a" : {
-          "typeFullFqn" : "system.cards.html_card",
-          "type" : "static",
-          "sizeX" : 7.5,
-          "sizeY" : 3,
-          "config" : {
-            "datasources" : [ {
-              "type" : "static",
-              "name" : "function",
-              "dataKeys" : [ {
-                "name" : "f(x)",
-                "type" : "function",
-                "label" : "Random",
-                "color" : "#2196f3",
-                "settings" : { },
-                "funcBody" : "var value = prevValue + Math.random() * 100 - 50;\nvar multiplier = Math.pow(10, 2 || 0);\nvar value = Math.round(value * multiplier) / multiplier;\nif (value < -1000) {\n\tvalue = -1000;\n} else if (value > 1000) {\n\tvalue = 1000;\n}\nreturn value;"
-              } ]
-            } ],
-            "showTitle" : false,
-            "backgroundColor" : "rgba(255, 255, 255, 0.8)",
-            "color" : "rgba(0, 0, 0, 0.87)",
-            "padding" : "8px",
-            "settings" : {
-              "cardHtml" : "<div class='card'>TUNNEL DASHBOARD IN PROGRESS</div>",
-              "cardCss" : ".card {\n    font-weight: bold;\n    font-size: 32px;\n    color: #999;\n    width: 100%;\n    height: 100%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n}"
-            },
-            "title" : "HTML Card",
-            "dropShadow" : true,
-            "enableFullscreen" : false,
-            "enableDataExport" : true,
-            "widgetStyle" : { },
-            "widgetCss" : "",
-            "pageSize" : 1024,
-            "noDataDisplayMessage" : ""
-          },
-          "row" : 0,
-          "col" : 0,
-          "id" : "22ad52b4-10fa-9264-9117-46b261f4604a"
-        },
         "1bd0cdcd-8326-2e09-b2d5-fdad6dcb8834" : {
           "typeFullFqn" : "system.cards.entities_table",
           "type" : "latest",
@@ -58,21 +19,25 @@
             "color" : "rgba(0, 0, 0, 0.87)",
             "padding" : "4px",
             "settings" : {
-              "entitiesTitle" : "Entities",
+              "entitiesTitle" : "Tunnels",
               "enableSearch" : true,
               "enableSelectColumnDisplay" : true,
               "enableStickyHeader" : true,
               "enableStickyAction" : true,
+              "showCellActionsMenu" : true,
               "reserveSpaceForHiddenAction" : "true",
               "displayEntityName" : false,
+              "entityNameColumnTitle" : "",
               "displayEntityLabel" : false,
+              "entityLabelColumnTitle" : "",
               "displayEntityType" : false,
               "displayPagination" : true,
               "defaultPageSize" : 10,
               "pageStepCount" : 3,
               "pageStepIncrement" : 10,
               "defaultSortOrder" : "displayName",
-              "useRowStyleFunction" : false
+              "useRowStyleFunction" : false,
+              "rowStyleFunction" : ""
             },
             "title" : "Entities table",
             "dropShadow" : true,
@@ -95,6 +60,18 @@
                 "color" : "#f44336",
                 "settings" : { },
                 "aggregationType" : null,
+                "units" : null,
+                "decimals" : null,
+                "funcBody" : null,
+                "usePostProcessing" : null,
+                "postFuncBody" : null
+              }, {
+                "name" : "psuCount",
+                "type" : "timeseries",
+                "label" : "PSU Count",
+                "color" : "#f44336",
+                "settings" : { },
+                "aggregationType" : "NONE",
                 "units" : null,
                 "decimals" : null,
                 "funcBody" : null,
@@ -128,8 +105,8 @@
                 "id" : "a0945ba8-87ed-65f8-d857-6bc173b578f8"
               } ]
             },
-            "showTitleIcon" : false,
-            "titleIcon" : "list",
+            "showTitleIcon" : true,
+            "titleIcon" : "mdi:tunnel",
             "iconColor" : null,
             "titleFont" : null,
             "titleColor" : null,
@@ -138,7 +115,8 @@
             "widgetStyle" : { },
             "widgetCss" : "",
             "pageSize" : 1024,
-            "noDataDisplayMessage" : ""
+            "noDataDisplayMessage" : "",
+            "iconSize" : "24px"
           },
           "row" : 0,
           "col" : 0,
@@ -3588,13 +3566,13 @@
               "stack" : false,
               "grid" : {
                 "show" : false,
-                "backgroundColor" : null,
+                "backgroundColor" : "#FFFFFFB2",
                 "borderWidth" : 1,
                 "borderColor" : "#ccc"
               },
               "xAxis" : {
-                "show" : false,
-                "label" : "",
+                "show" : true,
+                "label" : "Date",
                 "labelFont" : {
                   "family" : "Roboto",
                   "size" : 12,
@@ -3604,7 +3582,7 @@
                   "lineHeight" : "1"
                 },
                 "labelColor" : "rgba(0, 0, 0, 0.54)",
-                "position" : "bottom",
+                "position" : "top",
                 "showTickLabels" : true,
                 "tickLabelFont" : {
                   "family" : "Roboto",
@@ -3615,13 +3593,13 @@
                   "lineHeight" : "1"
                 },
                 "tickLabelColor" : "rgba(0, 0, 0, 0.54)",
-                "ticksFormat" : { },
                 "showTicks" : true,
                 "ticksColor" : "rgba(0, 0, 0, 0.54)",
                 "showLine" : true,
                 "lineColor" : "rgba(0, 0, 0, 0.54)",
                 "showSplitLines" : true,
-                "splitLinesColor" : "rgba(0, 0, 0, 0.12)"
+                "splitLinesColor" : "rgba(0, 0, 0, 0.12)",
+                "ticksFormat" : { }
               },
               "noAggregationBarWidthSettings" : {
                 "strategy" : "group",
@@ -3730,13 +3708,13 @@
               },
               "background" : {
                 "type" : "color",
-                "imageUrl" : null,
                 "color" : "#FFFFFFD9",
                 "overlay" : {
                   "enabled" : false,
                   "color" : "rgba(255,255,255,0.72)",
                   "blur" : 3
-                }
+                },
+                "imageUrl" : null
               },
               "padding" : "12px"
             },
@@ -3815,7 +3793,7 @@
             "color" : "rgba(0, 0, 0, 0.87)",
             "padding" : "4px",
             "settings" : {
-              "entitiesTitle" : "Entities",
+              "entitiesTitle" : "All PSU",
               "enableSearch" : true,
               "enableSelectColumnDisplay" : true,
               "enableStickyHeader" : true,
@@ -3835,7 +3813,7 @@
               "useRowStyleFunction" : true,
               "rowStyleFunction" : "var result = {\r\n    background: \"#FFFFFF\"\r\n};\r\n\r\nvar a = String(entity[\"Action\"] || \"\");\r\n\r\n// 1) Action Needed overrides (operator priority)\r\nif (a === \"DISPATCH\") {\r\n    result.background = \"rgba(211, 47, 47, 0.50)\"; // red\r\n    return result;\r\n}\r\nif (a === \"INVESTIGATE\") {\r\n    result.background = \"rgba(255, 165, 0, 0.50)\"; // orange\r\n    return result;\r\n}\r\nif (a === \"MONITOR\") {\r\n    result.background = \"rgba(255, 191, 0, 0.50)\"; // amber\r\n    return result;\r\n}\r\nif (a === \"NO ACTION\") {\r\n    //keep neutral, but you can tint slightly green if you want:\r\n    result.background = \"rgba(56, 142, 60, 0.50)\";\r\n    return result;\r\n}\r\n\r\n\r\n\r\nreturn result;"
             },
-            "title" : "Entities table",
+            "title" : "ALL PSU",
             "dropShadow" : true,
             "enableFullscreen" : false,
             "titleStyle" : {
@@ -3901,8 +3879,8 @@
                 "id" : "b3629b49-a185-52ff-1246-f301d9312f8d"
               } ]
             },
-            "showTitleIcon" : false,
-            "titleIcon" : "list",
+            "showTitleIcon" : true,
+            "titleIcon" : "mdi:power-plug",
             "iconColor" : null,
             "titleFont" : null,
             "titleColor" : null,
@@ -3911,7 +3889,8 @@
             "widgetStyle" : { },
             "widgetCss" : "",
             "pageSize" : 1024,
-            "noDataDisplayMessage" : ""
+            "noDataDisplayMessage" : "",
+            "iconSize" : "24px"
           },
           "row" : 0,
           "col" : 0,
@@ -4132,8 +4111,8 @@
           "config" : {
             "datasources" : [ ],
             "showTitle" : true,
-            "backgroundColor" : "rgba(255, 255, 255, 0.85)",
-            "color" : "rgba(0, 0, 0, 0.87)",
+            "backgroundColor" : "rgba(255, 255, 255, 0)",
+            "color" : "rgb(255, 255, 255)",
             "padding" : "0px",
             "settings" : {
               "mapType" : "geoMap",
@@ -4148,7 +4127,138 @@
                 "sourceType" : "image",
                 "url" : "data:image/svg+xml;base64,PHN2ZyBpZD0ic3ZnMiIgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMTAwIiB3aWR0aD0iMTAwIiB2ZXJzaW9uPSIxLjEiIHhtbG5zOmNjPSJodHRwOi8vY3JlYXRpdmVjb21tb25zLm9yZy9ucyMiIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIgdmlld0JveD0iMCAwIDEwMCAxMDAiPgogPGcgaWQ9ImxheWVyMSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMCAtOTUyLjM2KSI+CiAgPHJlY3QgaWQ9InJlY3Q0Njg0IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBoZWlnaHQ9Ijk5LjAxIiB3aWR0aD0iOTkuMDEiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiB5PSI5NTIuODYiIHg9Ii40OTUwNSIgc3Ryb2tlLXdpZHRoPSIuOTkwMTAiIGZpbGw9IiNlZWUiLz4KICA8dGV4dCBpZD0idGV4dDQ2ODYiIHN0eWxlPSJ3b3JkLXNwYWNpbmc6MHB4O2xldHRlci1zcGFjaW5nOjBweDt0ZXh0LWFuY2hvcjptaWRkbGU7dGV4dC1hbGlnbjpjZW50ZXIiIGZvbnQtd2VpZ2h0PSJib2xkIiB4bWw6c3BhY2U9InByZXNlcnZlIiBmb250LXNpemU9IjEwcHgiIGxpbmUtaGVpZ2h0PSIxMjUlIiB5PSI5NzAuNzI4MDkiIHg9IjQ5LjM5NjQ3NyIgZm9udC1mYW1pbHk9IlJvYm90byIgZmlsbD0iIzY2NjY2NiI+PHRzcGFuIGlkPSJ0c3BhbjQ2OTAiIHg9IjUwLjY0NjQ3NyIgeT0iOTcwLjcyODA5Ij5JbWFnZSBiYWNrZ3JvdW5kIDwvdHNwYW4+PHRzcGFuIGlkPSJ0c3BhbjQ2OTIiIHg9IjQ5LjM5NjQ3NyIgeT0iOTgzLjIyODA5Ij5pcyBub3QgY29uZmlndXJlZDwvdHNwYW4+PC90ZXh0PgogIDxyZWN0IGlkPSJyZWN0NDY5NCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgaGVpZ2h0PSIxOS4zNiIgd2lkdGg9IjY5LjM2IiBzdHJva2U9IiMwMDAiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgeT0iOTkyLjY4IiB4PSIxNS4zMiIgc3Ryb2tlLXdpZHRoPSIuNjM5ODYiIGZpbGw9Im5vbmUiLz4KIDwvZz4KPC9zdmc+Cg=="
               },
-              "markers" : [ ],
+              "markers" : [ {
+                "dsType" : "entity",
+                "dsLabel" : "",
+                "dsDeviceId" : null,
+                "dsEntityAliasId" : "4114d715-47b0-df30-7d2c-3ca628360520",
+                "dsFilterId" : null,
+                "additionalDataSources" : [ ],
+                "additionalDataKeys" : [ {
+                  "name" : "maxActionLevel",
+                  "type" : "timeseries",
+                  "label" : "maxActionLevel",
+                  "color" : "#2196f3",
+                  "settings" : { }
+                }, {
+                  "name" : "psuCount",
+                  "type" : "timeseries",
+                  "label" : "psuCount",
+                  "color" : "#2196f3",
+                  "settings" : { }
+                } ],
+                "label" : {
+                  "show" : true,
+                  "type" : "function",
+                  "pattern" : "${entityName}",
+                  "patternFunction" : "//var tunnelName = data.entityName;\nreturn data.entityName;"
+                },
+                "tooltip" : {
+                  "show" : true,
+                  "trigger" : "hover",
+                  "autoclose" : true,
+                  "type" : "function",
+                  "pattern" : "var actionLevel = /* fetch from entity */;\nvar markerColor = actionLevel >= 3 ? 'red' : \n                  actionLevel >= 2 ? 'orange' : \n                  actionLevel >= 1 ? 'yellow' : 'green';\n\n// Create marker with popup\nmarker.bindPopup(`\n  <b>${tunnelName}</b><br>\n  PSUs: ${psuCount}<br>\n  Status: ${statusSummary}<br>\n  <a href='#' onclick='navigateToTunnel()'>View Details</a>\n`);",
+                  "offsetX" : 0,
+                  "offsetY" : -1,
+                  "patternFunction" : "// Tooltip Function - Simple version using calculated fields\nvar tunnelName = data.entityName || 'Unknown Tunnel';\nvar latitude = data.latitude || 0;\nvar longitude = data.longitude || 0;\nvar maxActionLevel = data.maxActionLevel || 0;\nvar psuCount = data.psuCount || 0;\n\n// Determine status text and color based on action level\nvar statusText = 'Unknown';\nvar statusColor = '#808080';\nvar statusIcon = '❓';\n\nif (maxActionLevel === 0) {\n    statusText = 'All Systems Healthy';\n    statusColor = '#4CAF50';\n    statusIcon = '✅';\n} else if (maxActionLevel === 1) {\n    statusText = 'Monitor Required';\n    statusColor = '#FFEB3B';\n    statusIcon = '⚠️';\n} else if (maxActionLevel === 2) {\n    statusText = 'Investigation Needed';\n    statusColor = '#FF9800';\n    statusIcon = '🔍';\n} else if (maxActionLevel === 3) {\n    statusText = 'DISPATCH REQUIRED';\n    statusColor = '#F44336';\n    statusIcon = '🚨';\n}\n\n// Build HTML tooltip\nvar html = '<div style=\"padding: 15px; min-width: 250px; font-family: Roboto, sans-serif; background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);\">';\n\n// Tunnel name header\nhtml += '<div style=\"font-size: 18px; font-weight: bold; margin-bottom: 12px; color: #333; border-bottom: 2px solid #eee; padding-bottom: 8px;\">';\nhtml += tunnelName;\nhtml += '</div>';\n\n// Status badge\nhtml += '<div style=\"margin-bottom: 12px; padding: 8px 12px; background: ' + statusColor + '; color: #fff; border-radius: 6px; font-weight: 500; text-align: center; font-size: 14px;\">';\nhtml += statusIcon + ' ' + statusText;\nhtml += '</div>';\n\n// Info grid\nhtml += '<div style=\"font-size: 13px; color: #666; line-height: 1.8;\">';\n\nhtml += '<div style=\"display: flex; justify-content: space-between; padding: 4px 0;\">';\nhtml += '<span style=\"font-weight: 500;\">Total PSUs:</span>';\nhtml += '<span>' + psuCount + '</span>';\nhtml += '</div>';\n\nhtml += '</div>';\n\n// Call to action\nhtml += '<div style=\"margin-top: 12px; padding-top: 12px; border-top: 1px solid #eee; font-size: 12px; color: #999; text-align: center;\">';\nhtml += '💡 Click marker to view details';\nhtml += '</div>';\n\nhtml += '</div>';\n\nreturn html;",
+                  "tagActions" : [ ]
+                },
+                "click" : {
+                  "type" : "openDashboardState",
+                  "targetDashboardStateId" : "tunnel_overview",
+                  "setEntityId" : true,
+                  "stateEntityParamName" : null,
+                  "openRightLayout" : false,
+                  "openInSeparateDialog" : false,
+                  "openInPopover" : false
+                },
+                "groups" : null,
+                "edit" : {
+                  "enabledActions" : [ ],
+                  "attributeScope" : "SERVER_SCOPE",
+                  "snappable" : false
+                },
+                "xKey" : {
+                  "name" : "latitude",
+                  "type" : "attribute",
+                  "label" : "latitude",
+                  "color" : "#2196f3",
+                  "settings" : { }
+                },
+                "yKey" : {
+                  "name" : "longitude",
+                  "type" : "attribute",
+                  "label" : "longitude",
+                  "color" : "#2196f3",
+                  "settings" : { }
+                },
+                "markerType" : "shape",
+                "markerShape" : {
+                  "size" : 34,
+                  "color" : {
+                    "type" : "range",
+                    "color" : "#F44336",
+                    "rangeKey" : {
+                      "name" : "maxActionLevel",
+                      "type" : "timeseries",
+                      "label" : "maxActionLevel",
+                      "color" : "#2196f3",
+                      "settings" : { }
+                    },
+                    "range" : [ {
+                      "from" : 0,
+                      "to" : 0,
+                      "color" : "rgb(76, 175, 80)"
+                    }, {
+                      "from" : 1,
+                      "to" : 1,
+                      "color" : "rgb(245, 221, 0)"
+                    }, {
+                      "from" : 2,
+                      "to" : 2,
+                      "color" : "rgb(232, 150, 35)"
+                    }, {
+                      "from" : 3,
+                      "to" : 3,
+                      "color" : "rgb(244, 67, 54)"
+                    } ],
+                    "colorFunction" : null
+                  },
+                  "shape" : "markerShape1"
+                },
+                "markerIcon" : {
+                  "iconContainer" : "iconContainer1",
+                  "icon" : "mdi:lightbulb-on",
+                  "size" : 48,
+                  "color" : {
+                    "type" : "constant",
+                    "color" : "#307FE5"
+                  }
+                },
+                "markerImage" : {
+                  "type" : "function",
+                  "image" : "https://static.thingsboard.cloud/assets/markers/shape1.svg",
+                  "imageSize" : 34,
+                  "imageFunction" : "// Marker Image Function\r\n// Returns custom colored marker based on tunnel status\r\n\r\n// Get the max action level for this tunnel\r\nvar maxActionLevel = 0;\r\n\r\n// Check if we have maxActionLevel data\r\nif (data && data.maxActionLevel !== undefined && data.maxActionLevel !== null) {\r\n    maxActionLevel = Number(data.maxActionLevel);\r\n}\r\n\r\n// Determine marker color based on action level\r\nvar markerColor = '#808080'; // Default gray (unknown)\r\n\r\nif (maxActionLevel === 0) {\r\n    markerColor = '#4CAF50'; // Green - Healthy\r\n} else if (maxActionLevel === 1) {\r\n    markerColor = '#FFEB3B'; // Yellow - Monitor\r\n} else if (maxActionLevel === 2) {\r\n    markerColor = '#FF9800'; // Orange - Investigate\r\n} else if (maxActionLevel >= 3) {\r\n    markerColor = '#F44336'; // Red - Critical\r\n}\r\n\r\n// Create custom SVG marker (location pin shape)\r\nvar svgMarker = \r\n    '<svg width=\"32\" height=\"48\" viewBox=\"0 0 32 48\" xmlns=\"http://www.w3.org/2000/svg\">' +\r\n    '<defs>' +\r\n    '<filter id=\"shadow\" x=\"-50%\" y=\"-50%\" width=\"200%\" height=\"200%\">' +\r\n    '<feDropShadow dx=\"0\" dy=\"2\" stdDeviation=\"2\" flood-opacity=\"0.3\"/>' +\r\n    '</filter>' +\r\n    '</defs>' +\r\n    // Main pin shape\r\n    '<path d=\"M16 0C7.2 0 0 7.2 0 16c0 12 16 32 16 32s16-20 16-32c0-8.8-7.2-16-16-16z\" ' +\r\n    'fill=\"' + markerColor + '\" stroke=\"#fff\" stroke-width=\"2\" filter=\"url(#shadow)\"/>' +\r\n    // Inner circle\r\n    '<circle cx=\"16\" cy=\"16\" r=\"7\" fill=\"#fff\" opacity=\"0.9\"/>' +\r\n    // Status indicator (smaller circle)\r\n    '<circle cx=\"16\" cy=\"16\" r=\"4\" fill=\"' + markerColor + '\"/>' +\r\n    '</svg>';\r\n\r\n// Return marker configuration\r\nreturn {\r\n    url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svgMarker),\r\n    size: [32, 48],\r\n    anchor: [16, 48]\r\n};",
+                  "images" : null
+                },
+                "markerOffsetX" : 0.5,
+                "markerOffsetY" : 1,
+                "markerClustering" : {
+                  "enable" : false,
+                  "zoomOnClick" : true,
+                  "maxZoom" : null,
+                  "maxClusterRadius" : 80,
+                  "zoomAnimation" : true,
+                  "showCoverageOnHover" : true,
+                  "spiderfyOnMaxZoom" : false,
+                  "chunkedLoad" : false,
+                  "lazyLoad" : true,
+                  "useClusterMarkerColorFunction" : false,
+                  "clusterMarkerColorFunction" : null
+                }
+              } ],
               "polygons" : [ ],
               "circles" : [ ],
               "polylines" : [ ],
@@ -4158,8 +4268,8 @@
               "scales" : [ ],
               "dragModeButton" : false,
               "fitMapBounds" : true,
-              "useDefaultCenterPosition" : true,
-              "defaultCenterPosition" : "50.114098, 8.672482",
+              "useDefaultCenterPosition" : false,
+              "defaultCenterPosition" : "",
               "defaultZoomLevel" : 13,
               "mapPageSize" : 16384,
               "mapActionButtons" : [ ],
@@ -4175,8 +4285,8 @@
               },
               "padding" : "8px"
             },
-            "title" : "Map",
-            "showTitleIcon" : false,
+            "title" : "Tunnel Location",
+            "showTitleIcon" : true,
             "titleTooltip" : "",
             "dropShadow" : true,
             "enableFullscreen" : false,
@@ -4190,18 +4300,66 @@
             "noDataDisplayMessage" : "",
             "configMode" : "advanced",
             "titleFont" : null,
-            "titleColor" : null,
+            "titleColor" : "#000000",
             "margin" : "0px",
             "borderRadius" : "0px",
             "iconSize" : "24px",
             "titleIcon" : "map",
-            "iconColor" : "#1F6BDD",
+            "iconColor" : "#000000",
             "actions" : { },
             "enableDataExport" : false
           },
           "row" : 0,
           "col" : 0,
           "id" : "c1a1b048-72ca-1bdf-b258-0d6e7131dbb6"
+        },
+        "c1c6beb3-4ce6-3910-4fc4-d4cd24683f64" : {
+          "typeFullFqn" : "system.cards.html_value_card",
+          "type" : "latest",
+          "sizeX" : 7.5,
+          "sizeY" : 3,
+          "config" : {
+            "datasources" : [ {
+              "type" : "entity",
+              "name" : "",
+              "entityAliasId" : "4114d715-47b0-df30-7d2c-3ca628360520",
+              "dataKeys" : [ {
+                "name" : "ownerName",
+                "type" : "entityField",
+                "label" : "Owner name",
+                "color" : "#4caf50",
+                "settings" : { }
+              } ],
+              "alarmFilterConfig" : {
+                "statusList" : [ "ACTIVE" ]
+              }
+            } ],
+            "showTitle" : false,
+            "backgroundColor" : "#FFFFFFCC",
+            "color" : "rgba(0, 0, 0, 0.87)",
+            "padding" : "0px",
+            "settings" : {
+              "cardHtml" : "<div class='card'>\n    <div class='content'>\n                <h1>${Owner name} TUNNEL DASHBOARD</h1>\n</div>\n</div>",
+              "cardCss" : ".card {\n   width: 100%;\n   height: 100%;\n   padding: 30px 20px 20px 20px;\n   border: 2px solid #ccc;\n   box-sizing: border-box;\n   \n}\n\n.card .content {\n   \n   display: flex;\n   flex-direction: row;\n   align-items: center;\n   justify-content: space-around;\n   height: 100%;\n   box-sizing: border-box;\n}\n\n.card .content .column {\n   display: flex;\n   flex-direction: column;    \n   justify-content: space-around;\n   height: 100%;\n}\n\n.card h1 {\n    text-transform: uppercase;\n    color: #0000008a;\n    font-size: 40px;\n    font-weight: bold;\n    margin: 0;\n    padding-bottom: 10px;\n    line-height: 32px;\n}\n\n.card .value {\n    font-size: 38px;\n    font-weight: 200;\n}\n\n.card .description {\n    font-size: 20px;\n    color: #999;\n}\n"
+            },
+            "title" : "HTML Value Card",
+            "dropShadow" : false,
+            "enableFullscreen" : false,
+            "widgetStyle" : { },
+            "titleStyle" : {
+              "fontSize" : "16px",
+              "fontWeight" : 400
+            },
+            "showLegend" : false,
+            "actions" : { },
+            "enableDataExport" : false,
+            "widgetCss" : "",
+            "pageSize" : 1024,
+            "noDataDisplayMessage" : ""
+          },
+          "row" : 0,
+          "col" : 0,
+          "id" : "c1c6beb3-4ce6-3910-4fc4-d4cd24683f64"
         }
       },
       "states" : {
@@ -4211,12 +4369,6 @@
           "layouts" : {
             "main" : {
               "widgets" : {
-                "22ad52b4-10fa-9264-9117-46b261f4604a" : {
-                  "sizeX" : 24,
-                  "sizeY" : 1,
-                  "row" : 0,
-                  "col" : 0
-                },
                 "1bd0cdcd-8326-2e09-b2d5-fdad6dcb8834" : {
                   "sizeX" : 7,
                   "sizeY" : 9,
@@ -4234,6 +4386,12 @@
                   "sizeY" : 9,
                   "row" : 1,
                   "col" : 13
+                },
+                "c1c6beb3-4ce6-3910-4fc4-d4cd24683f64" : {
+                  "sizeX" : 24,
+                  "sizeY" : 1,
+                  "row" : 0,
+                  "col" : 0
                 }
               },
               "gridSettings" : {
